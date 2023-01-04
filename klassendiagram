@@ -1,0 +1,60 @@
+misschien declinedOrder een order laten en een Delivery een aparte klassen. Of Order een abstracte klassen en delivery een xtended klasse
+
+@startuml
+class User{
+String email
+}
+
+class Authority
+
+
+class Role {
+RoleType role
+}
+
+
+
+class Menu {
+Date closingDate
+Date deliveryDate
+}
+
+class Order{
+Date orderDate
+boolean Accepted
+}
+
+class Delivery{
+Date EstimatedTimeOfArrival
+}
+
+
+class Timer
+class NotificationManager
+class Feedback
+
+
+
+
+
+User "0..*"-- "1..*" Role
+(User, Role) . Authority
+
+User -- Menu
+User -- Order
+Order -- Menu
+Menu -- Feedback
+User -- Feedback
+Menu -- Timer
+Delivery -- Order
+
+DeclinedOrder -- Order
+User -- NotificationManager
+
+
+
+
+
+
+
+@enduml
