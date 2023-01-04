@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WondercooksApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WondercooksApplication.class, args);
-	}
+	public static void main(String[] args) {SpringApplication.run(WondercooksApplication.class, args);}
 
 }
