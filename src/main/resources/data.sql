@@ -1,0 +1,3 @@
+insert into roles(rolename) values ('USER'), ('ADMIN');
+insert into users(username,password) values('admin','$2y$10$nEtfn.R/pJQt47IX7WN8QeksN3DpXSdjR1lvyVSd8LRThk3gHy4HG'),('user','$2y$10$6SZiItOb6NGuTBW/5koWf.JJe.nMwWlJfQG0IDse87DRuUpjhpINO');
+insert into users_roles(users_username,roles_rolename) values ((SELECT username FROM users WHERE username='admin'), (SELECT rolename FROM roles WHERE rolename='ADMIN'));

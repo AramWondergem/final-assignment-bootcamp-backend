@@ -1,6 +1,6 @@
 package nl.wondergem.wondercooks.controller;
 
-import nl.wondergem.wondercooks.dto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
 import nl.wondergem.wondercooks.util.Util;

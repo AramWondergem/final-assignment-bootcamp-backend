@@ -1,4 +1,4 @@
-package nl.wondergem.wondercooks.dto;
+package nl.wondergem.wondercooks.dto.inputDto;
 
 import lombok.Getter;
 import lombok.Setter;

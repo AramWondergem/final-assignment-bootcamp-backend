@@ -2,7 +2,7 @@ package nl.wondergem.wondercooks.mapper;
 
 
 import nl.wondergem.wondercooks.dto.UserDto;
-import nl.wondergem.wondercooks.dto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.service.RoleService;

@@ -2,7 +2,7 @@ package nl.wondergem.wondercooks.service;
 
 
 import nl.wondergem.wondercooks.dto.UserDto;
-import nl.wondergem.wondercooks.dto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.UsernameNotFoundException;
 import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.User;
