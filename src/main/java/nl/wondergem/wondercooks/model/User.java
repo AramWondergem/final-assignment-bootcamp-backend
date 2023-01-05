@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Collection;
 
 @Entity
@@ -12,7 +13,8 @@ import java.util.Collection;
 @Table(name="users")
 public class User {
     @Id
-    private String username;
+    @Email
+    private String username; //is an emailadres to make
 
     private String password;
 

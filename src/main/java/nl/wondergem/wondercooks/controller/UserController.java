@@ -26,8 +26,8 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
 
         if (br.hasErrors()) {
-            String erroMessage = Util.badRequestMessageGenerator(br);
-            throw new BadRequestException(erroMessage);
+            String errorMessage = Util.badRequestMessageGenerator(br);
+            throw new BadRequestException(errorMessage);
         } else {
             String createdID = service.saveUser(userInputDto);
             URI uri = Util.uriGenerator("/users/", createdID);

@@ -18,7 +18,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final static Key SECRET_KEY = RandomKeyGenerator.getKeyFromKeyGenerator(64);
+//    private final static Key SECRET_KEY = RandomKeyGenerator.getKeyFromKeyGenerator(64); todo weer aanzetten
+    private final static String SECRET_KEY = "DITISEENTEST";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

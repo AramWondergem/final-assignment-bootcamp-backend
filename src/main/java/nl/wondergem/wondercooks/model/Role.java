@@ -17,7 +17,6 @@ import java.util.Collection;
 @Table(name = "roles")
 public class Role {
 
-
     @Id
     private String rolename;
 
