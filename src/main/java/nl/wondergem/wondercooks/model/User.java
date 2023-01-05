@@ -21,4 +21,10 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
 
+    public void addRole(Role role) {
+        if(!roles.contains(role)) {
+            roles.add(role);
+        }
+    }
+
 }

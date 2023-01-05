@@ -16,7 +16,7 @@ import java.net.URI;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("${apiPrefix}/users")
 public class UserController {
 
     private final UserService service;
@@ -49,7 +49,7 @@ public class UserController {
     public ResponseEntity<Object> getAllUsers(){
         return ResponseEntity.ok(service.getAllUsers());
     }
-
+    //todo misschien weghalen
 //    @PutMapping("/{username}")
 //    public ResponseEntity<Object> updateUser(@PathVariable String username, @Valid UserInputDto userInputDto, BindingResult br) {
 //        if (br.hasErrors()) {
@@ -66,8 +66,16 @@ public class UserController {
 
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         service.updatePassword(ud,passwordRequest);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("password updated");
 
+    }
+
+    @PutMapping("/cook")
+    public ResponseEntity<Object> updateRoleWithCook() {
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.updateRoleWithCook(ud);
+        return ResponseEntity.ok().body("Roles updated with cook");
 
     }
 

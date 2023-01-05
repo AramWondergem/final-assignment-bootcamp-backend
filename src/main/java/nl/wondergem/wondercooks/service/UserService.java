@@ -6,6 +6,7 @@ import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.User;
+import nl.wondergem.wondercooks.repository.RoleRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -23,15 +24,17 @@ public class UserService {
     private final UserRepository repos;
     private final UserMapper userMapper;
     private final AuthService authService;
+    private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService){
+    public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService, RoleRepository roleRepository){
         this.repos = userRepository;
         this.userMapper = userMapper;
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
 
+        this.roleRepository = roleRepository;
     }
 
     public String saveUser(UserInputDto userInputDto) {
@@ -58,7 +61,7 @@ public class UserService {
         }
         return userDtos;
     }
-
+//todo mischien weghalen
 //    public User updateUser(String username, UserInputDto userInputDto){
 //
 //        if(repos.existsById(username) && username.equals(userInputDto.getUsername())) {
@@ -89,6 +92,17 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(passwordRequest.newPassword));
 
         repos.save(user);
+    }
+
+    public void updateRoleWithCook(UserDetails ud){
+
+
+        User user = repos.getReferenceById(ud.getUsername());
+
+        user.addRole(roleRepository.getReferenceById("COOK"));
+
+        repos.save(user);
+
     }
 
     // todo add changeRoles
