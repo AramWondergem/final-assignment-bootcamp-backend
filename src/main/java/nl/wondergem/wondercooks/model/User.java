@@ -14,7 +14,7 @@ import java.util.Collection;
 public class User {
     @Id
     @Email
-    private String username; //is an emailadres to make
+    private String username; //e-mailadres is identifier
 
     private String password;
 

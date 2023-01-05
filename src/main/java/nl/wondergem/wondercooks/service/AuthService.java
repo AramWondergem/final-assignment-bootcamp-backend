@@ -22,12 +22,18 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String signIn(AuthDto authDto) {
+    public Authentication authenticationChecker(String username, String password){
         UsernamePasswordAuthenticationToken up =
-                new UsernamePasswordAuthenticationToken(authDto.username, authDto.password);
+                new UsernamePasswordAuthenticationToken(username, password);
 
 
-        Authentication auth = authManager.authenticate(up);
+        return authManager.authenticate(up);
+    }
+
+    public String signIn(AuthDto authDto) {
+
+       Authentication auth = authenticationChecker(authDto.username,authDto.password);
+
 
         UserDetails ud = (UserDetails) auth.getPrincipal();
 
