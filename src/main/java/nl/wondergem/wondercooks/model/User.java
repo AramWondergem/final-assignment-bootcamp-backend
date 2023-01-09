@@ -12,6 +12,11 @@ import java.util.Collection;
 @Setter
 @Table(name="users")
 public class User {
+
+    @Column(unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Id
     @Email
     private String username; //e-mailadres is identifier

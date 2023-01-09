@@ -4,6 +4,7 @@ package nl.wondergem.wondercooks.service;
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.RoleRepository;
@@ -39,9 +40,15 @@ public class UserService {
 
     public String saveUser(UserInputDto userInputDto) {
 
-        User newUser = userMapper.userInputDtoToUser(userInputDto);
+        if(!repos.existsById(userInputDto.username)) {
 
-        return repos.save(newUser).getUsername();
+            User newUser = userMapper.userInputDtoToUser(userInputDto);
+
+            return repos.save(newUser).getUsername();
+        }
+        else {
+            throw new BadRequestException("Username already used");
+        }
 
     }
 

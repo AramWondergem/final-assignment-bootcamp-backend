@@ -35,17 +35,18 @@ public class UserController {
         } else {
 
             String createdID = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/users/", createdID);
+            URI uri = Util.uriGenerator("/{apiPrefix}/users/", createdID);
             return ResponseEntity.created(uri).body("User created");
         }
     }
     // get one user
-    @GetMapping ("/{username}")
-    public ResponseEntity<Object> getUser(@PathVariable String username) {
-        return ResponseEntity.ok(service.getUser(username));
+    @GetMapping ("")
+    public ResponseEntity<Object> getUser() {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(service.getUser(ud.getUsername()));
     }
 
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<Object> getAllUsers(){
         return ResponseEntity.ok(service.getAllUsers());
     }
