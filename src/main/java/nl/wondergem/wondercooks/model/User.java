@@ -13,9 +13,6 @@ import java.util.Collection;
 @Table(name="users")
 public class User {
 
-    @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Id
     @Email

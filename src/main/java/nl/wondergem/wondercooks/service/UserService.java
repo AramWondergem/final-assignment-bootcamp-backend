@@ -52,8 +52,10 @@ public class UserService {
 
     }
 
-    public User getUser(String id){
-        return repos.getReferenceById(id);
+    public UserDto getUser(String id){
+
+        User user = repos.getReferenceById(id);
+        return userMapper.userToUserDto(user);
     }
 
     public Iterable<UserDto> getAllUsers(){
