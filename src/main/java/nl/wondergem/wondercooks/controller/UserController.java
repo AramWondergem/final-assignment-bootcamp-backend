@@ -16,6 +16,7 @@ import java.net.URI;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("${apiPrefix}/users")
 public class UserController {
 
