@@ -1,4 +1,2 @@
-insert into roles(rolename) values ('USER'), ('ADMIN'),('COOK');
-insert into users(username,email,password) values('admin','admin@test.nl','$2y$10$nEtfn.R/pJQt47IX7WN8QeksN3DpXSdjR1lvyVSd8LRThk3gHy4HG'),('user','user@test.nl','$2a$10$6FfTki9IeFOTpP07.uzalOSaQ227pukhMl6iALTfKPBhNgPzKHpSW');
-insert into users_roles(users_email,roles_rolename) values ((SELECT email FROM users WHERE email='admin@test.nl'), (SELECT rolename FROM roles WHERE rolename='ADMIN'));
-insert into users_roles(users_email,roles_rolename) values ((SELECT email FROM users WHERE email='user@test.nl'), (SELECT rolename FROM roles WHERE rolename='USER'));
+insert into users(username,email,password) values('admin','admin@test.nl','$2a$10$ZP50cAmIg35v5Ozhe5OuhuGSFs5p6gA5OuuqJyUnvrgMLbfjNKC3i'),('user','user@test.nl','$2a$10$ZP50cAmIg35v5Ozhe5OuhuGSFs5p6gA5OuuqJyUnvrgMLbfjNKC3i');
+insert into user_roles(user_email,roles) values('admin@test.nl', 'ADMIN'),('user@test.nl','USER'),('admin@test.nl','USER');

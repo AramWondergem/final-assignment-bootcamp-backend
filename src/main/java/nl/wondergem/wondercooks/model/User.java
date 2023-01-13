@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,13 +23,12 @@ public class User {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
     public void addRole(Role role) {
-        if(!roles.contains(role)) {
-            roles.add(role);
-        }
+        roles.add(role);
     }
 
 }

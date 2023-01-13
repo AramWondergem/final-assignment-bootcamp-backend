@@ -6,8 +6,8 @@ import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.UserMapper;
+import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
-import nl.wondergem.wondercooks.repository.RoleRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -25,26 +27,27 @@ public class UserService {
     private final UserRepository repos;
     private final UserMapper userMapper;
     private final AuthService authService;
-    private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService, RoleRepository roleRepository){
+    public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService){
         this.repos = userRepository;
         this.userMapper = userMapper;
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
 
-        this.roleRepository = roleRepository;
     }
 
-    public String saveUser(UserInputDto userInputDto) {
+    public UserDto saveUser(UserInputDto userInputDto) {
 
         if(!repos.existsById(userInputDto.email)) {
 
-            User newUser = userMapper.userInputDtoToUser(userInputDto);
+            Set<Role> roles = new HashSet<>();
+            roles.add(Role.USER);
 
-            return repos.save(newUser).getEmail();
+            User newUser = userMapper.userInputDtoToUser(userInputDto,roles);
+
+            return userMapper.userToUserDto(repos.save(newUser));
         }
         else {
             throw new BadRequestException("Username already used");
@@ -108,7 +111,7 @@ public class UserService {
 
         User user = repos.getReferenceById(ud.getUsername());
 
-        user.addRole(roleRepository.getReferenceById("COOK"));
+        user.addRole(Role.COOK);
 
         repos.save(user);
 

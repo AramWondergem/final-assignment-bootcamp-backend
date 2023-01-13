@@ -1,5 +1,6 @@
 package nl.wondergem.wondercooks.controller;
 
+import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
@@ -26,7 +27,7 @@ public class UserController {
         this.service = service;
     }
 
-    // get all users
+
     @PostMapping("")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
 
@@ -34,10 +35,9 @@ public class UserController {
             String errorMessage = Util.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
-
-            String createdID = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/", createdID);
-            return ResponseEntity.created(uri).body("User created");
+            UserDto userDto = service.saveUser(userInputDto);
+            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            return ResponseEntity.created(uri).body(userDto);
         }
     }
     // get one user
