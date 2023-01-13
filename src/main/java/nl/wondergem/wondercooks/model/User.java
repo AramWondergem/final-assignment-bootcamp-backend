@@ -13,10 +13,12 @@ import java.util.Collection;
 @Table(name="users")
 public class User {
 
+    private String username;
+
 
     @Id
     @Email
-    private String username; //e-mailadres is identifier
+    private String email; //e-mailadres is identifier
 
     private String password;
 

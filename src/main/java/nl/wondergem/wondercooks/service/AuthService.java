@@ -32,7 +32,7 @@ public class AuthService {
 
     public String signIn(AuthDto authDto) {
 
-       Authentication auth = authenticationChecker(authDto.username,authDto.password);
+       Authentication auth = authenticationChecker(authDto.email,authDto.password);
 
 
         UserDetails ud = (UserDetails) auth.getPrincipal();

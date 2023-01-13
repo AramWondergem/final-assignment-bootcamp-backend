@@ -25,8 +25,9 @@ private final RoleService roleService;
 
     public UserDto userToUserDto(User user) {
         UserDto userDto = new UserDto();
-        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
         userDto.setRoles(user.getRoles());
+        userDto.setUsername(user.getUsername());
 
         return userDto;
     }
@@ -36,6 +37,7 @@ private final RoleService roleService;
         User user = new User();
 
         user.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
+        user.setEmail(userInputDto.getEmail());
         user.setUsername(userInputDto.getUsername());
 
         Collection<Role> roles = new ArrayList<>();

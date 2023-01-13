@@ -40,11 +40,11 @@ public class UserService {
 
     public String saveUser(UserInputDto userInputDto) {
 
-        if(!repos.existsById(userInputDto.username)) {
+        if(!repos.existsById(userInputDto.email)) {
 
             User newUser = userMapper.userInputDtoToUser(userInputDto);
 
-            return repos.save(newUser).getUsername();
+            return repos.save(newUser).getEmail();
         }
         else {
             throw new BadRequestException("Username already used");
