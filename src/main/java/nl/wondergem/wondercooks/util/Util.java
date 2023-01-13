@@ -30,6 +30,15 @@ public class Util {
 
         return uri;
     }
+    public static URI uriGenerator(String path) {
+        URI uri = URI.create(
+                ServletUriComponentsBuilder.
+                        fromCurrentContextPath().
+                        path(path).toUriString());
+
+        return uri;
+    }
+
 
     public static boolean idChecker(long id, JpaRepository repos) {
 

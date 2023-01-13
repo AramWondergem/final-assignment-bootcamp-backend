@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 
 public class AuthDto {
     @NotBlank
-    public String username;
+    public String email;
 
     @NotBlank
     public String password;

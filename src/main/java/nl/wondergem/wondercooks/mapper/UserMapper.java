@@ -5,46 +5,39 @@ import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
-import nl.wondergem.wondercooks.service.RoleService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class UserMapper {
 private final PasswordEncoder passwordEncoder;
-private final RoleService roleService;
 
-    public UserMapper(PasswordEncoder passwordEncoder, RoleService roleService) {
+
+    public UserMapper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
+
     }
 
 
     public UserDto userToUserDto(User user) {
         UserDto userDto = new UserDto();
-        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
         userDto.setRoles(user.getRoles());
+        userDto.setUsername(user.getUsername());
 
         return userDto;
     }
 
-   public User userInputDtoToUser(UserInputDto userInputDto){
+   public User userInputDtoToUser(UserInputDto userInputDto, Set<Role> roles){
 
         User user = new User();
 
         user.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
+        user.setEmail(userInputDto.getEmail());
         user.setUsername(userInputDto.getUsername());
-
-        Collection<Role> roles = new ArrayList<>();
-
-        for (String s :
-                userInputDto.roles) {
-            roles.add(roleService.getRole(s));
-
-        }
         user.setRoles(roles);
 
         return user;

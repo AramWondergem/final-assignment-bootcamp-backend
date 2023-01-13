@@ -4,11 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.wondergem.wondercooks.util.RandomKeyGenerator;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,8 +39,12 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return
-                Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+
+
+            return
+                    Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+
+
     }
 
     private Boolean isTokenExpired(String token) {
