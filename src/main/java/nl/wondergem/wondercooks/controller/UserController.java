@@ -36,15 +36,15 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            URI uri = Util.uriGenerator("/{apiPrefix}/users/" + userDto.id);
             return ResponseEntity.created(uri).body(userDto);
         }
     }
     // get one user
-    @GetMapping ("")
-    public ResponseEntity<Object> getUser() {
+    @GetMapping ("/{id}")
+    public ResponseEntity<Object> getUser(@PathVariable long id) {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(service.getUser(ud.getUsername()));
+        return ResponseEntity.ok(service.getUser(id));
     }
 
     @GetMapping("/all")
@@ -63,27 +63,26 @@ public class UserController {
 //        }
 //    }
 
-    @PutMapping("")
-    public ResponseEntity<Object> updatePassword(@Valid @RequestBody PasswordRequest passwordRequest) {
+//    @PutMapping("")
+//    public ResponseEntity<Object> updatePassword(@Valid @RequestBody PasswordRequest passwordRequest) {
+//
+//        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        service.updatePassword(ud,passwordRequest);
+//        return ResponseEntity.ok().body("password updated");
+//
+//    }
 
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        service.updatePassword(ud,passwordRequest);
-        return ResponseEntity.ok().body("password updated");
+    @PutMapping("/{id}/cook")
+    public ResponseEntity<Object> updateRoleWithCook(@PathVariable long id) {
 
-    }
-
-    @PutMapping("/cook")
-    public ResponseEntity<Object> updateRoleWithCook() {
-
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        service.updateRoleWithCook(ud);
+        service.updateRoleWithCook(id);
         return ResponseEntity.ok().body("Roles updated with cook");
 
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<Object> deleteRole (@PathVariable String username) {
-        service.deleteUser(username);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteRole (@PathVariable long id) {
+        service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
