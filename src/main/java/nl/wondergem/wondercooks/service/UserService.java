@@ -13,13 +13,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -54,12 +52,13 @@ public class UserService {
         }
 
     }
+// todo misschien verwijderen
 
-    public UserDto getUser(long id){
-
-        User user = repos.getReferenceById(id);
-        return userMapper.userToUserDto(user);
-    }
+//    public UserDto getUser(long id){
+//
+//        User user = repos.getReferenceById(id);
+//        return userMapper.userToUserDto(user);
+//    }
 
     public UserDto getUser(String email){
 
@@ -112,20 +111,31 @@ public class UserService {
 //        repos.save(user);
 //    }
 
-    public void updateRoleWithCook(long id ){
+    public void updateRoleWithCook(String email ){
 
 
-        User user = repos.getReferenceById(id);
+        Optional<User> userOptional = repos.findByEmail(email);
 
-        user.addRole(Role.COOK);
+        if(userOptional.isPresent()){
 
-        repos.save(user);
+            User user = userOptional.get();
+
+            user.addRole(Role.COOK);
+
+            repos.save(user);
+
+        } else {
+            throw new UsernameNotFoundException(email);
+        }
+
+
 
     }
 
     // todo add changeRoles
 
-    public void deleteUser(long id){
-        repos.deleteById(id);
+    public boolean deleteUser(String email){
+
+       return repos.deleteByEmail(email);
     }
 }

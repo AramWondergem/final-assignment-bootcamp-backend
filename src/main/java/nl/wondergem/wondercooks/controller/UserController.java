@@ -72,17 +72,18 @@ public class UserController {
 //
 //    }
 
-    @PutMapping("/{id}/cook")
-    public ResponseEntity<Object> updateRoleWithCook(@PathVariable long id) {
-
-        service.updateRoleWithCook(id);
+    @PutMapping("/cook")
+    public ResponseEntity<Object> updateRoleWithCook() {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.updateRoleWithCook(ud.getUsername());
         return ResponseEntity.ok().body("Roles updated with cook");
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("")
     public ResponseEntity<Object> deleteRole (@PathVariable long id) {
-        service.deleteUser(id);
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.deleteUser(ud.getUsername());
         return ResponseEntity.noContent().build();
     }
 
