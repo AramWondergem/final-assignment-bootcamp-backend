@@ -9,6 +9,7 @@ import java.util.Collection;
 @Getter
 @Setter
 public class UserDto {
+    public long id;
     public String email;
     public String username;
     public Collection<Role> roles;

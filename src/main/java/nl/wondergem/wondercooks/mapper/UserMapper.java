@@ -27,6 +27,7 @@ private final PasswordEncoder passwordEncoder;
         userDto.setEmail(user.getEmail());
         userDto.setRoles(user.getRoles());
         userDto.setUsername(user.getUsername());
+        userDto.setId(user.getId());
 
         return userDto;
     }

@@ -30,11 +30,10 @@ public class AuthController {
         try {
 
             String token = authService.signIn(authDto);
-            UserDto userDto = userService.getUser(authDto.email);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                    .body(userDto);
+                    .body("Token generated");
 
 
         }

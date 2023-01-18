@@ -26,21 +26,21 @@ public class UserService {
 
     private final UserRepository repos;
     private final UserMapper userMapper;
-    private final AuthService authService;
-
-    private final PasswordEncoder passwordEncoder;
+//    private final AuthService authService;
+//
+//    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService){
         this.repos = userRepository;
         this.userMapper = userMapper;
-        this.authService = authService;
-        this.passwordEncoder = passwordEncoder;
+//        this.authService = authService;
+//        this.passwordEncoder = passwordEncoder;
 
     }
 
     public UserDto saveUser(UserInputDto userInputDto) {
 
-        if(!repos.existsById(userInputDto.email)) {
+        if(!repos.existsByEmail(userInputDto.email)) {
 
             Set<Role> roles = new HashSet<>();
             roles.add(Role.USER);
@@ -55,7 +55,7 @@ public class UserService {
 
     }
 
-    public UserDto getUser(String id){
+    public UserDto getUser(long id){
 
         User user = repos.getReferenceById(id);
         return userMapper.userToUserDto(user);
@@ -92,24 +92,24 @@ public class UserService {
 //
 //    }
 
-    public void updatePassword(UserDetails ud,PasswordRequest passwordRequest) {
+//    public void updatePassword(long id ,PasswordRequest passwordRequest) {
+//
+//
+//        Authentication auth = authService.authenticationChecker(ud.getUsername(),passwordRequest.oldPassword);
+//
+//        UserDetails uds = (UserDetails) auth.getPrincipal();
+//
+//        User user = repos.getReferenceById(id);
+//
+//        user.setPassword(passwordEncoder.encode(passwordRequest.newPassword));
+//
+//        repos.save(user);
+//    }
+
+    public void updateRoleWithCook(long id ){
 
 
-        Authentication auth = authService.authenticationChecker(ud.getUsername(),passwordRequest.oldPassword);
-
-        UserDetails uds = (UserDetails) auth.getPrincipal();
-
-        User user = repos.getReferenceById(uds.getUsername());
-
-        user.setPassword(passwordEncoder.encode(passwordRequest.newPassword));
-
-        repos.save(user);
-    }
-
-    public void updateRoleWithCook(UserDetails ud){
-
-
-        User user = repos.getReferenceById(ud.getUsername());
+        User user = repos.getReferenceById(id);
 
         user.addRole(Role.COOK);
 
@@ -119,7 +119,7 @@ public class UserService {
 
     // todo add changeRoles
 
-    public void deleteUser(String user){
-        repos.deleteById(user);
+    public void deleteUser(long id){
+        repos.deleteById(id);
     }
 }

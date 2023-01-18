@@ -18,6 +18,9 @@ public class User {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Email
     private String email; //e-mailadres is identifier
 
