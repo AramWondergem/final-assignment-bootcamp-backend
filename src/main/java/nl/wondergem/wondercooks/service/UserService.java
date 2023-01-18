@@ -61,6 +61,12 @@ public class UserService {
         return userMapper.userToUserDto(user);
     }
 
+    public UserDto getUser(String email){
+
+        User user = repos.findByEmail(email).get();
+        return userMapper.userToUserDto(user);
+    }
+
     public Iterable<UserDto> getAllUsers(){
         List<User> reposUserList = repos.findAll();
         List<UserDto> userDtos = new ArrayList<>();

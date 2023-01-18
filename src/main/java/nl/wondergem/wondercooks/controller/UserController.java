@@ -36,15 +36,15 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/" + userDto.id);
-            return ResponseEntity.created(uri).body(userDto);
+            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            return ResponseEntity.created(uri).body("user created");
         }
     }
     // get one user
-    @GetMapping ("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable long id) {
+    @GetMapping ("")
+    public ResponseEntity<Object> getUser() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(service.getUser(id));
+        return ResponseEntity.ok(service.getUser(ud.getUsername()));
     }
 
     @GetMapping("/all")
