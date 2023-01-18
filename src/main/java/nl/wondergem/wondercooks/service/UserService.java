@@ -111,7 +111,7 @@ public class UserService {
 //        repos.save(user);
 //    }
 
-    public void updateRoleWithCook(String email ){
+    public UserDto updateRoleWithCook(String email ){
 
 
         Optional<User> userOptional = repos.findByEmail(email);
@@ -122,7 +122,9 @@ public class UserService {
 
             user.addRole(Role.COOK);
 
-            repos.save(user);
+            User changedUser = repos.save(user);
+
+            return userMapper.userToUserDto(changedUser);
 
         } else {
             throw new UsernameNotFoundException(email);
