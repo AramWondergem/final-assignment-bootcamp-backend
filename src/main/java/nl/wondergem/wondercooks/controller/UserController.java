@@ -1,7 +1,6 @@
 package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.dto.UserDto;
-import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
@@ -81,7 +80,7 @@ public class UserController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Object> deleteRole (@PathVariable long id) {
+    public ResponseEntity<Object> deleteUser() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         service.deleteUser(ud.getUsername());
         return ResponseEntity.noContent().build();
