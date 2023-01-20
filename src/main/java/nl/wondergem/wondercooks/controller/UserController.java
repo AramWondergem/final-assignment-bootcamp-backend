@@ -1,7 +1,6 @@
 package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.dto.UserDto;
-import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
@@ -36,15 +35,15 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/" + userDto.id);
-            return ResponseEntity.created(uri).body(userDto);
+            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            return ResponseEntity.created(uri).body("user created");
         }
     }
     // get one user
-    @GetMapping ("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable long id) {
+    @GetMapping ("")
+    public ResponseEntity<Object> getUser() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(service.getUser(id));
+        return ResponseEntity.ok(service.getUser(ud.getUsername()));
     }
 
     @GetMapping("/all")
@@ -72,17 +71,18 @@ public class UserController {
 //
 //    }
 
-    @PutMapping("/{id}/cook")
-    public ResponseEntity<Object> updateRoleWithCook(@PathVariable long id) {
-
-        service.updateRoleWithCook(id);
+    @PutMapping("/cook")
+    public ResponseEntity<Object> updateRoleWithCook() {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.updateRoleWithCook(ud.getUsername());
         return ResponseEntity.ok().body("Roles updated with cook");
 
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteRole (@PathVariable long id) {
-        service.deleteUser(id);
+    @DeleteMapping("")
+    public ResponseEntity<Object> deleteUser() {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.deleteUser(ud.getUsername());
         return ResponseEntity.noContent().build();
     }
 
