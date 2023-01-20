@@ -2,6 +2,7 @@ package nl.wondergem.wondercooks.service;
 
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.Role;
@@ -191,5 +192,71 @@ class UserServiceTest {
         verify(repos).deleteByEmail(email);
         assertTrue(result);
 
+    }
+
+    @Test
+    @DisplayName("WhenUserIsUpdatedWithUserUpdateDtoThenAMatchingUserDtoIsReturned")
+    void updateUser() {
+        //arrange
+        UserUpdateDto userUpdateDto = new UserUpdateDto();
+
+        userUpdateDto.setEmail("tijger@gmail.com");
+        userUpdateDto.setUsername("tijger");
+        userUpdateDto.setStreetAndNumber("kerkstraat 1");
+        userUpdateDto.setZipcode("1234KL");
+        userUpdateDto.setCity("Cattown");
+        userUpdateDto.setFavoriteColour("Pink");
+        userUpdateDto.setAllergies("salmon");
+        userUpdateDto.setAllergiesExplanation("I will die");
+
+        User updatedUser = newUser;
+        updatedUser.setEmail("tijger@gmail.com");
+        updatedUser.setUsername("tijger");
+        updatedUser.setStreetAndNumber("kerkstraat 1");
+        updatedUser.setZipcode("1234KL");
+        updatedUser.setCity("Cattown");
+        updatedUser.setFavoriteColour("Pink");
+        updatedUser.setAllergies("salmon");
+        updatedUser.setAllergiesExplanation("I will die");
+
+        UserDto updatedUserDto = new UserDto();
+        updatedUserDto.id = 1;
+        updatedUserDto.roles = roles;
+        updatedUserDto.email = "tijger@gmail.com";
+        updatedUserDto.username = "tijger";
+        updatedUserDto.streetAndNumber = "kerkstraat 1";
+        updatedUserDto.zipcode = "1234KL";
+        updatedUserDto.city = "Cattown";
+        updatedUserDto.favoriteColour = "Pink";
+        updatedUserDto.allergies = "salmon";
+        updatedUserDto.allergiesExplanation = "I will die";
+
+        when(repos.findByEmail(email)).thenReturn(Optional.of(newUser));
+        when(userMapper.userUpdateDtoToUser(userUpdateDto,newUser)).thenReturn(updatedUser);
+        when(repos.save(updatedUser)).thenReturn(updatedUser);
+        when(userMapper.userToUserDto(updatedUser)).thenReturn(updatedUserDto);
+
+        //act
+
+        UserDto result = userService.updateUser(userUpdateDto,email);
+
+        //assert
+
+        verify(repos).findByEmail(email);
+        verify(userMapper).userUpdateDtoToUser(userUpdateDto,newUser);
+        verify(repos).save(updatedUser);
+        verify(userMapper).userToUserDto(updatedUser);
+
+        assertEquals(1, result.id);
+        assertEquals(1, result.roles.size());
+        assertTrue(result.roles.contains(Role.USER));
+        assertEquals("tijger@gmail.com", result.email);
+        assertEquals("tijger", result.username);
+        assertEquals("kerkstraat 1", result.streetAndNumber);
+        assertEquals("1234KL", result.zipcode);
+        assertEquals("Cattown", result.city);
+        assertEquals("Pink", result.favoriteColour);
+        assertEquals("salmon", result.allergies);
+        assertEquals("I will die", result.allergiesExplanation);
     }
 }

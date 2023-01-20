@@ -29,6 +29,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+    private String streetAndNumber;
+    private String zipcode;
+    private String city;
+    private String favoriteColour;
+    private String allergies;
+    private String allergiesExplanation;
 
     public void addRole(Role role) {
         roles.add(role);

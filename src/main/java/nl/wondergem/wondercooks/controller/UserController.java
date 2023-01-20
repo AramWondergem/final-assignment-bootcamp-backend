@@ -2,6 +2,7 @@ package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
 import nl.wondergem.wondercooks.util.Util;
@@ -70,6 +71,20 @@ public class UserController {
 //        return ResponseEntity.ok().body("password updated");
 //
 //    }
+
+    @PutMapping("")
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto, BindingResult br) {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (br.hasErrors()) {
+            String errorMessage = Util.badRequestMessageGenerator(br);
+            throw new BadRequestException(errorMessage);
+        } else {
+            UserDto userDto = service.updateUser(userUpdateDto,ud.getUsername());
+            return ResponseEntity.ok(userDto);
+        }
+
+    }
 
     @PutMapping("/cook")
     public ResponseEntity<Object> updateRoleWithCook() {

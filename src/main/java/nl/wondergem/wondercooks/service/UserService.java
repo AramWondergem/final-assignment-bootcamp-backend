@@ -4,6 +4,7 @@ package nl.wondergem.wondercooks.service;
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.PasswordRequest;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.Role;
@@ -77,6 +78,16 @@ public class UserService {
 
         }
         return userDtos;
+    }
+
+    public UserDto updateUser(UserUpdateDto userUpdateDto, String email) {
+
+        User user = repos.findByEmail(email).get();
+        User updatedUser = userMapper.userUpdateDtoToUser(userUpdateDto,user);
+        updatedUser = repos.save(updatedUser);
+
+        return userMapper.userToUserDto(updatedUser);
+
     }
 //todo mischien weghalen
 //    public User updateUser(String username, UserInputDto userInputDto){
