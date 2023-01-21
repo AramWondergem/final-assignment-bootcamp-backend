@@ -19,7 +19,7 @@ import java.util.Objects;
 @Service
 public class FileManagerService {
 
-    @Value("${MY_UPLOAD_LOCATION}")
+//    @Value("${MY_UPLOAD_LOCATION}")
     private Path fileStoragePath;
 
     private final String fileStorageLocation;
@@ -39,13 +39,15 @@ public class FileManagerService {
 
     public String storeFile(MultipartFile file) throws FileAlreadyExistsException {
 
-        String fileNameAddition = StringUtils.cleanPath(Objects.requireNonNull(Date.from(Instant.now()).toString())); // to prevent that files can have the same name
+
+
+        String fileNameAddition = StringUtils.cleanPath(Objects.requireNonNull(String.valueOf(Date.from(Instant.now()).getTime()))); // to prevent that files can have the same name
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
-        Path filePath = Paths.get(fileStoragePath + File.separator + fileNameAddition + File.separator + fileName);
+        Path filePath = Paths.get(fileStoragePath + File.separator + fileNameAddition +  fileName);
 
         try{
-            Files.copy(file.getInputStream(),filePath); // todo maybe add StandardCopyOption.Replace existing
+            Files.copy(file.getInputStream(),filePath,StandardCopyOption.REPLACE_EXISTING); // todo maybe add StandardCopyOption.Replace existing
         } catch (IOException e) {
 
             if( e instanceof FileAlreadyExistsException) {
@@ -56,7 +58,7 @@ public class FileManagerService {
 
         }
 
-        return fileNameAddition + File.separator + fileName;
+        return fileNameAddition + fileName;
     }
 
 
