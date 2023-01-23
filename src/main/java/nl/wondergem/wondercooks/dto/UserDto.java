@@ -19,4 +19,5 @@ public class UserDto {
     public String favoriteColour;
     public String allergies;
     public String allergiesExplanation;
+    public String profilePicture;
 }

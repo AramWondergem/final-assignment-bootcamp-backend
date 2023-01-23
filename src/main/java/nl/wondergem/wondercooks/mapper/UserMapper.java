@@ -35,6 +35,7 @@ private final PasswordEncoder passwordEncoder;
         userDto.setFavoriteColour(user.getFavoriteColour());
         userDto.setAllergies(user.getAllergies());
         userDto.setAllergiesExplanation(user.getAllergiesExplanation());
+        userDto.setProfilePicture(user.getProfilePicture());
 
         return userDto;
     }
@@ -63,6 +64,7 @@ private final PasswordEncoder passwordEncoder;
         user.setFavoriteColour(userUpdateDto.favoriteColour);
         user.setAllergies(userUpdateDto.allergies);
         user.setAllergiesExplanation(userUpdateDto.allergiesExplanation);
+        user.setProfilePicture(userUpdateDto.profilePicture);
 
         return user;
 

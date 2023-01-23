@@ -18,7 +18,6 @@ import java.net.URI;
 import java.nio.file.FileAlreadyExistsException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("${apiPrefix}/files")
 public class FileManagerController {
 

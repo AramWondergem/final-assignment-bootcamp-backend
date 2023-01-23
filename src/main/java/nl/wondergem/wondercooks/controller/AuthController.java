@@ -12,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "Authorization")
 @RequestMapping("${apiPrefix}/auth")
 public class AuthController {
 

@@ -35,6 +35,7 @@ public class User {
     private String favoriteColour;
     private String allergies;
     private String allergiesExplanation;
+    private String profilePicture;
 
     public void addRole(Role role) {
         roles.add(role);
