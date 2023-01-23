@@ -95,4 +95,22 @@ class FileManagerServiceTest {
         assertTrue(fileResult.isReadable());
 
     }
+
+    @Test
+    @DisplayName("WhenFileIsDeletedThenIsNotInTheDirectoryAnymore")
+    void deleteFile() throws FileAlreadyExistsException {
+
+        //arrange
+        String fileName = fileManagerService.storeFile(file);
+
+        //act
+        boolean result = fileManagerService.deleteFile(fileName);
+
+        //assert
+
+        assertTrue(result);
+        assertFalse(Files.exists(basePath.resolve(fileName)));
+
+
+    }
 }

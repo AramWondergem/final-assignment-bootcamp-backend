@@ -36,7 +36,7 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            URI uri = Util.uriGenerator("/${apiPrefix}/users/");
             return ResponseEntity.created(uri).body("user created");
         }
     }

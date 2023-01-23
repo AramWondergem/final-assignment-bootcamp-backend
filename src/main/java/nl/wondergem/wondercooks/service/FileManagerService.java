@@ -19,7 +19,7 @@ import java.util.Objects;
 @Service
 public class FileManagerService {
 
-//    @Value("${MY_UPLOAD_LOCATION}")
+    @Value("${MY_UPLOAD_LOCATION}")
     private Path fileStoragePath;
 
     private final String fileStorageLocation;
@@ -29,10 +29,13 @@ public class FileManagerService {
 
         this.fileStorageLocation = fileStorageLocation;
 
-        try{
-            Files.createDirectories(fileStoragePath);
-        } catch (IOException exception) {
-            throw new RuntimeException("Issue in creating file directory, it could be due to the fact that it already exists");
+        if(!Files.exists(fileStoragePath) && !Files.isDirectory(fileStoragePath)) {
+
+            try {
+                Files.createDirectories(fileStoragePath);
+            } catch (IOException exception) {
+                throw new RuntimeException("Issue in creating file directory");
+            }
         }
 
     }
@@ -80,6 +83,18 @@ public class FileManagerService {
             throw new RuntimeException("the file doesn't exist or is not readable");
         }
 
+
+    }
+
+    public boolean deleteFile(String fileName) {
+
+        Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(fileName);
+
+        try{
+            return Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw new RuntimeException("A problem occurred with deleting: " + fileName);
+        }
 
     }
 
