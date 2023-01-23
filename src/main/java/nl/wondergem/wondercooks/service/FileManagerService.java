@@ -1,6 +1,7 @@
 package nl.wondergem.wondercooks.service;
 
 
+import nl.wondergem.wondercooks.exception.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -80,7 +81,7 @@ public class FileManagerService {
         if(resource.exists()&& resource.isReadable()){
             return resource;
         } else {
-            throw new RuntimeException("the file doesn't exist or is not readable");
+            throw new UsernameNotFoundException("the file doesn't exist or is not readable");
         }
 
 

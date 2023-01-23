@@ -1,8 +1,11 @@
 package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.exception.BadRequestException;
+import nl.wondergem.wondercooks.exception.UsernameNotFoundException;
 import nl.wondergem.wondercooks.service.FileManagerService;
 import nl.wondergem.wondercooks.util.Util;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,16 +24,19 @@ public class FileManagerController {
 
     private final FileManagerService fileManagerService;
 
+    @Autowired
+    private Environment env;
+
 
     public FileManagerController(FileManagerService fileManagerService) {
         this.fileManagerService = fileManagerService;
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> storeFile(@RequestParam MultipartFile file) throws FileAlreadyExistsException {
+    public ResponseEntity<Object> storeFile(@RequestParam("file") MultipartFile file) throws FileAlreadyExistsException {
 
         String fileName = fileManagerService.storeFile(file);
-        URI uri = Util.uriGenerator("/${apiPrefix}/files/" + fileName);
+        URI uri = Util.uriGenerator(env.getProperty("apiPrefix") + "/files/" + fileName);
         return ResponseEntity.created(uri).body("File stored");
     }
 
@@ -51,7 +57,7 @@ public class FileManagerController {
         if (fileManagerService.deleteFile(fileName)) {
             return ResponseEntity.ok( fileName + " is deleted");
         } else {
-            throw new BadRequestException("file does not exist in the system");
+            throw new UsernameNotFoundException("file does not exist in the system");
         }
 
     }

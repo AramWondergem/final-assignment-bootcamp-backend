@@ -6,6 +6,8 @@ import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
 import nl.wondergem.wondercooks.util.Util;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,8 @@ import java.net.URI;
 @RequestMapping("${apiPrefix}/users")
 public class UserController {
 
+    @Autowired
+    private Environment env;
     private final UserService service;
 
     public UserController(UserService service) {
@@ -36,7 +40,7 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/${apiPrefix}/users/");
+            URI uri = Util.uriGenerator(env.getProperty("apiPrefix")+ "/users/");
             return ResponseEntity.created(uri).body("user created");
         }
     }
