@@ -1,14 +1,23 @@
 package nl.wondergem.wondercooks.util;
 
+import lombok.experimental.UtilityClass;
 import nl.wondergem.wondercooks.exception.RecordNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-
+@UtilityClass
 public class Util {
+
+
+
+
+
     public static String badRequestMessageGenerator(BindingResult br) {
         StringBuilder sb = new StringBuilder();
 
@@ -30,6 +39,7 @@ public class Util {
 
         return uri;
     }
+
     public static URI uriGenerator(String path) {
         URI uri = URI.create(
                 ServletUriComponentsBuilder.

@@ -51,6 +51,10 @@ Delivery -- Order
 DeclinedOrder -- Order
 User -- NotificationManager
 
+User "1" -- "0..*"Menu : cook with menu
+User "0..*" -- "0--*" Menu : customer with menu
+User "0..*" -- "0--*" User : cook with menu
+
 
 
 

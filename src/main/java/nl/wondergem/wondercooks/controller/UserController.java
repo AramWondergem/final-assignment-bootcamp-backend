@@ -2,9 +2,12 @@ package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.UserService;
 import nl.wondergem.wondercooks.util.Util;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +19,11 @@ import java.net.URI;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("${apiPrefix}/users")
 public class UserController {
 
+    @Autowired
+    private Environment env;
     private final UserService service;
 
     public UserController(UserService service) {
@@ -35,7 +39,7 @@ public class UserController {
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator("/{apiPrefix}/users/");
+            URI uri = Util.uriGenerator(env.getProperty("apiPrefix")+ "/users/");
             return ResponseEntity.created(uri).body("user created");
         }
     }
@@ -70,6 +74,20 @@ public class UserController {
 //        return ResponseEntity.ok().body("password updated");
 //
 //    }
+
+    @PutMapping("")
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto, BindingResult br) {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (br.hasErrors()) {
+            String errorMessage = Util.badRequestMessageGenerator(br);
+            throw new BadRequestException(errorMessage);
+        } else {
+            UserDto userDto = service.updateUser(userUpdateDto,ud.getUsername());
+            return ResponseEntity.ok(userDto);
+        }
+
+    }
 
     @PutMapping("/cook")
     public ResponseEntity<Object> updateRoleWithCook() {

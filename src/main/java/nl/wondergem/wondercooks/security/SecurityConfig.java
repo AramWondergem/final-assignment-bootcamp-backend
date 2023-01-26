@@ -52,9 +52,11 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
+                .cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers("/files").hasAuthority("USER")
                 .antMatchers("/users").hasAuthority("USER")
                 .antMatchers("/roles").hasAuthority("ADMIN")
                 .and()
