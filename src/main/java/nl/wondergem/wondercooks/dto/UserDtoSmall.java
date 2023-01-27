@@ -2,14 +2,13 @@ package nl.wondergem.wondercooks.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.wondergem.wondercooks.model.CookCustomer;
 import nl.wondergem.wondercooks.model.Role;
 
 import java.util.Collection;
 
 @Getter
 @Setter
-public class UserDto {
+public class UserDtoSmall {
     public long id;
     public String email;
     public String username;
@@ -21,6 +20,5 @@ public class UserDto {
     public String allergies;
     public String allergiesExplanation;
     public String profilePicture;
-    public Collection<UserDtoSmall> customers;
-    public Collection<UserDtoSmall> cooks;
+
 }

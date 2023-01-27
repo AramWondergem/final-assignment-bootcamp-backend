@@ -1,24 +1,57 @@
 package nl.wondergem.wondercooks.controller;
 
+import nl.wondergem.wondercooks.dto.UserDto;
+import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
+import nl.wondergem.wondercooks.exception.BadRequestException;
+import nl.wondergem.wondercooks.security.MyUserDetails;
+import nl.wondergem.wondercooks.service.CookCustomerService;
+import nl.wondergem.wondercooks.service.UserService;
+import nl.wondergem.wondercooks.util.Util;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+
+@RestController
+@RequestMapping("${apiPrefix}/cookcustomer")
 public class CookCustomerController {
 
+    private final CookCustomerService cookCustomerService;
+
+    public CookCustomerController(CookCustomerService cookCustomerService, UserService userService) {
+        this.cookCustomerService = cookCustomerService;
+    }
+
+    @PostMapping("/cook")
+    public ResponseEntity<Object> createRelation(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
+
+        if (br.hasErrors()) {
+            String errorMessage = Util.badRequestMessageGenerator(br);
+            throw new BadRequestException(errorMessage);
+        } else {
+            MyUserDetails ud = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            cookCustomerService.createRelationCook(ud, userInputDto);
+
+            return ResponseEntity.ok("relation created");
+        }
+    }
+
+    @PostMapping("/customer/{id}")
+    public ResponseEntity<Object> createRelation(@PathVariable long id) {
+
+            MyUserDetails ud = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            cookCustomerService.createRelationCustomer(ud, id);
+
+            return ResponseEntity.ok("relation created");
+
+    }
 
 
-    //endpoint voor aanmaken relatie gebaseerd op emailadres van klant. Username uit token gehaald.
-    // input dto aanmaken met email als verplicht en gevalideerd veld
-    // checken of user al bestaat
-    // zo niet, user aanmaken met vast wachtwoord
-    // met beide users de relatie aanmaken
-
-
-    // endpoint voor deleten relatie met id
-    // Ophalen gebruiker die dit aanvraagt.
-    // check of een van de twee deel is van de relatie met id
-    // deleten
-
-    //endpoint voor deleten relatie met id door admin
-    // check of gebruiker admin is
-    // relatie verwijderen
 
 
 }

@@ -1,5 +1,6 @@
 package nl.wondergem.wondercooks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,9 +37,11 @@ public class User {
     private String profilePicture;
 
     @OneToMany(mappedBy = "cook")
+    @JsonIgnore
     private Set<CookCustomer> cookCustomerCookSide;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private Set<CookCustomer> cookCustomerCustomerSide;
 
     public void addRole(Role role) {
