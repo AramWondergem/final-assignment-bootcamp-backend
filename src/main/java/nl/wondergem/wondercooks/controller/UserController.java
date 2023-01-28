@@ -4,6 +4,8 @@ import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
+import nl.wondergem.wondercooks.model.EmailDetails;
+import nl.wondergem.wondercooks.service.EmailServiceImpl;
 import nl.wondergem.wondercooks.service.UserService;
 import nl.wondergem.wondercooks.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserController {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    EmailServiceImpl emailService;
     private final UserService service;
 
     public UserController(UserService service) {
@@ -40,6 +45,8 @@ public class UserController {
         } else {
             UserDto userDto = service.saveUser(userInputDto);
             URI uri = Util.uriGenerator(env.getProperty("apiPrefix")+ "/users/");
+            EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "nieuw account", "nieuw account");
+            emailService.sendSimpleMail(emailDetails);
             return ResponseEntity.created(uri).body("user created");
         }
     }
