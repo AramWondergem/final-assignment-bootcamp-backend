@@ -55,11 +55,9 @@ public class UserService {
     }
 // todo misschien verwijderen
 
-//    public UserDto getUser(long id){
-//
-//        User user = repos.getReferenceById(id);
-//        return userMapper.userToUserDto(user);
-//    }
+    public User getUser(long id){
+        return repos.getReferenceById(id);
+    }
 
     public UserDto getUser(String email){
 

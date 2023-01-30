@@ -36,13 +36,22 @@ public class User {
     private String allergiesExplanation;
     private String profilePicture;
 
-    @OneToMany(mappedBy = "cook")
+    @OneToMany(mappedBy = "cook",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CookCustomer> cookCustomerCookSide;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CookCustomer> cookCustomerCustomerSide;
+
+    @OneToMany(mappedBy = "cook")
+    @JsonIgnore
+    private Set<Menu> menusAsCook;
+
+    @ManyToMany(mappedBy = "customers")
+    @JsonIgnore
+    private Set<Menu> menusAsCustomer;
+
 
     public void addRole(Role role) {
         roles.add(role);

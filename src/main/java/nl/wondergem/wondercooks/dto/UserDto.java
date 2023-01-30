@@ -23,4 +23,6 @@ public class UserDto {
     public String profilePicture;
     public Collection<UserDtoSmall> customers;
     public Collection<UserDtoSmall> cooks;
+    public Collection<MenuDtoSmall> menusAsCook;
+    public Collection<MenuDtoSmall> menusAsCustomers;
 }

@@ -1,28 +1,30 @@
 package nl.wondergem.wondercooks.mapper;
 
 
+import nl.wondergem.wondercooks.dto.MenuDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
 import nl.wondergem.wondercooks.model.CookCustomer;
+import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
 public class UserMapper {
 private final PasswordEncoder passwordEncoder;
+private final MenuMapper menuMapper;
 
 
-    public UserMapper(PasswordEncoder passwordEncoder) {
+    public UserMapper(PasswordEncoder passwordEncoder, MenuMapper menuMapper) {
         this.passwordEncoder = passwordEncoder;
-
+        this.menuMapper = menuMapper;
     }
 
 
@@ -66,8 +68,30 @@ private final PasswordEncoder passwordEncoder;
             }
         }
 
+        Set<MenuDtoSmall> menusAsCook = new HashSet<>();
+
+        if(user.getMenusAsCook() != null) {
+            for(Menu menu: user.getMenusAsCook()) {
+                MenuDtoSmall menuDtoSmall = menuMapper.menuToMenuDtoSmall(menu);
+                menusAsCook.add(menuDtoSmall);
+            }
+        }
+
+        Set<MenuDtoSmall> menusAsCustomer = new HashSet<>();
+
+        if(user.getMenusAsCustomer() != null) {
+            for(Menu menu: user.getMenusAsCustomer()) {
+                MenuDtoSmall menuDtoSmall = menuMapper.menuToMenuDtoSmall(menu);
+                menusAsCustomer.add(menuDtoSmall);
+            }
+        }
+
+
         userDto.setCooks(cooks);
         userDto.setCustomers(customers);
+        userDto.setMenusAsCook(menusAsCook);
+        userDto.setMenusAsCustomers(menusAsCustomer);
+
 
         return userDto;
     }
