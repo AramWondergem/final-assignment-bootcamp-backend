@@ -24,6 +24,7 @@ private final MenuMapper menuMapper;
 
     public UserMapper(PasswordEncoder passwordEncoder, MenuMapper menuMapper) {
         this.passwordEncoder = passwordEncoder;
+
         this.menuMapper = menuMapper;
     }
 

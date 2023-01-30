@@ -45,7 +45,7 @@ public class UserController {
         } else {
             UserDto userDto = service.saveUser(userInputDto);
             URI uri = Util.uriGenerator(env.getProperty("apiPrefix")+ "/users/");
-            EmailDetails emailDetails = new EmailDetails("wonderreclame@.com", "nieuw account", "nieuw account");
+            EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "nieuw account", "nieuw account");
             emailService.sendSimpleMail(emailDetails);
             return ResponseEntity.created(uri).body("user created");
         }

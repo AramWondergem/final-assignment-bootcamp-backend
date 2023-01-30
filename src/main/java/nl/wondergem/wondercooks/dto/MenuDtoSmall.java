@@ -3,6 +3,7 @@ package nl.wondergem.wondercooks.dto;
 import nl.wondergem.wondercooks.model.MenuType;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public class MenuDtoSmall {
@@ -16,10 +17,11 @@ public class MenuDtoSmall {
     public String menuPictureURL;
     public MenuType menuType;
     public String warmUpInstruction;
-    public Date orderDeadline;
-    public Date startDeliveryWindow;
-    public Date endDeliveryWindow;
+    public LocalDateTime orderDeadline;
+    public LocalDateTime startDeliveryWindow;
+    public LocalDateTime endDeliveryWindow;
     public int numberOfMenus;
     public float priceMenu;
     public String tikkieLink;
+    public boolean sendToCustomers;
 }

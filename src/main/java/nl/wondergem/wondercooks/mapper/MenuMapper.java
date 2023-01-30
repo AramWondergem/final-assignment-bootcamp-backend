@@ -3,11 +3,12 @@ package nl.wondergem.wondercooks.mapper;
 import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.MenuDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
-import nl.wondergem.wondercooks.dto.inputDto.MenuDtoInput;
+import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.MenuType;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class MenuMapper {
     private final UserMapper userMapper;
     private final UserService userService;
 
-    public MenuMapper(UserMapper userMapper, UserService userService) {
+    public MenuMapper(@Lazy UserMapper userMapper, UserService userService) {
         this.userMapper = userMapper;
         this.userService = userService;
     }
@@ -57,7 +58,7 @@ public class MenuMapper {
         menuDto.numberOfMenus = menu.getNumberOfMenus();
         menuDto.priceMenu = menu.getPriceMenu();
         menuDto.tikkieLink = menu.getTikkieLink();
-
+        menuDto.sendToCustomers = menu.isSendToCustomers();
         return menuDto;
 
     }
@@ -81,22 +82,22 @@ public class MenuMapper {
         menuDtoSmall.numberOfMenus = menu.getNumberOfMenus();
         menuDtoSmall.priceMenu = menu.getPriceMenu();
         menuDtoSmall.tikkieLink = menu.getTikkieLink();
+        menuDtoSmall.sendToCustomers = menu.isSendToCustomers();
 
         return menuDtoSmall;
 
 
     }
 
-    public Menu menuInputDtoToMenu(MenuDtoInput menuDtoInput){
+    public Menu menuInputDtoToMenu(MenuInputDto menuInputDto, Menu menu){
 
-        Menu menu = new Menu();
 
-        menu.setCook(userService.getUser(menuDtoInput.cookId));
+        menu.setCook(userService.getUser(menuInputDto.cookId));
 
         Set<User> customers = new HashSet<>();
-        if(menuDtoInput.customersId != null) {
+        if(menuInputDto.customersId != null) {
             for (int id :
-                    menuDtoInput.customersId) {
+                    menuInputDto.customersId) {
 
                 User customer = userService.getUser((long) id);
                 customers.add(customer);
@@ -105,21 +106,22 @@ public class MenuMapper {
         }
 
         menu.setCustomers(customers);
-        menu.setTitle(menuDtoInput.title);
-        menu.setStarter(menuDtoInput.starter);
-        menu.setMain(menuDtoInput.main);
-        menu.setSide(menuDtoInput.side);
-        menu.setDessert(menuDtoInput.dessert);
-        menu.setMenuDescription(menuDtoInput.menuDescription);
-        menu.setMenuPictureURL(menuDtoInput.menuPictureURL);
-        menu.setMenuType(MenuType.valueOf(menuDtoInput.menuType));
-        menu.setWarmUpInstruction(menuDtoInput.warmUpInstruction);
-        menu.setOrderDeadline(menuDtoInput.orderDeadline);
-        menu.setStartDeliveryWindow(menuDtoInput.startDeliveryWindow);
-        menu.setEndDeliveryWindow(menuDtoInput.endDeliveryWindow);
-        menu.setNumberOfMenus(menuDtoInput.numberOfMenus);
-        menu.setPriceMenu(menuDtoInput.priceMenu);
-        menu.setTikkieLink(menuDtoInput.tikkieLink);
+        menu.setTitle(menuInputDto.title);
+        menu.setStarter(menuInputDto.starter);
+        menu.setMain(menuInputDto.main);
+        menu.setSide(menuInputDto.side);
+        menu.setDessert(menuInputDto.dessert);
+        menu.setMenuDescription(menuInputDto.menuDescription);
+        menu.setMenuPictureURL(menuInputDto.menuPictureURL);
+        menu.setMenuType(MenuType.valueOf(menuInputDto.menuType));
+        menu.setWarmUpInstruction(menuInputDto.warmUpInstruction);
+        menu.setOrderDeadline(menuInputDto.orderDeadline);
+        menu.setStartDeliveryWindow(menuInputDto.startDeliveryWindow);
+        menu.setEndDeliveryWindow(menuInputDto.endDeliveryWindow);
+        menu.setNumberOfMenus(menuInputDto.numberOfMenus);
+        menu.setPriceMenu(menuInputDto.priceMenu);
+        menu.setTikkieLink(menuInputDto.tikkieLink);
+        menu.setSendToCustomers(menuInputDto.sendToCustomers);
 
         return menu;
 

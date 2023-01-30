@@ -2,7 +2,6 @@ package nl.wondergem.wondercooks.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.wondergem.wondercooks.model.CookCustomer;
 import nl.wondergem.wondercooks.model.Role;
 
 import java.util.Collection;

@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -41,12 +42,13 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuType menuType;
     private String warmUpInstruction;
-    private Date orderDeadline;
-    private Date startDeliveryWindow;
-    private Date endDeliveryWindow;
+    private LocalDateTime orderDeadline;
+    private LocalDateTime startDeliveryWindow;
+    private LocalDateTime endDeliveryWindow;
     private int numberOfMenus;
     private float priceMenu;
     private String tikkieLink;
+    private boolean sendToCustomers;
 
 
 

@@ -1,18 +1,18 @@
 package nl.wondergem.wondercooks.dto.inputDto;
 
-import nl.wondergem.wondercooks.model.MenuType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
-
+import java.time.LocalDateTime;
 
 
 @Validated
-public class MenuDtoInput {
-    @NotBlank
+public class MenuInputDto {
+    @NotNull
     public int cookId;
     public int[] customersId;
     public String title;
@@ -25,12 +25,14 @@ public class MenuDtoInput {
     public String menuType;
     public String warmUpInstruction;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    public Date orderDeadline;
+    public LocalDateTime orderDeadline;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    public Date startDeliveryWindow;
+    public LocalDateTime startDeliveryWindow;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    public Date endDeliveryWindow;
+    public LocalDateTime endDeliveryWindow;
     public int numberOfMenus;
     public float priceMenu;
     public String tikkieLink;
+    @NotNull
+    public boolean sendToCustomers;
 }
