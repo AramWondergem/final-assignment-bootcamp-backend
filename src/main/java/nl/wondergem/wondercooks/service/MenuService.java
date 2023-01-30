@@ -65,11 +65,10 @@ public class MenuService {
 
         for (User customer:
              customers) {
-            EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "New Menu",
-                    "Hi " + customer.getUsername() + "," +
+            EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com" , "Hi " + customer.getUsername() + "," +
                             "\n\nCheckout your Wonder Gems account, because there is a new menu for you. It is a menu of your favorite cook " +
                     menuToBeUpdated.getCook().getUsername() + "." +
-                    "\n\nKind regards,\n\n The Elves from the backend");
+                    "\n\nKind regards,\n\n The Elves from the backend" , "New Menu");
             emailService.sendSimpleMail(emailDetails);
         }
 
