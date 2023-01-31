@@ -45,11 +45,12 @@ public class CookCustomerService {
 
 
         boolean cookCustomerRelationExists = false;
-
-        for (CookCustomer cookCustomer : customers) {
-            if (cookCustomer.getCustomer().getId() == customer.getId()) {
-                cookCustomerRelationExists = true;
-                break;
+        if (customers != null) {
+            for (CookCustomer cookCustomer : customers) {
+                if (cookCustomer.getCustomer().getId() == customer.getId()) {
+                    cookCustomerRelationExists = true;
+                    break;
+                }
             }
         }
 
@@ -76,11 +77,14 @@ public class CookCustomerService {
 
         boolean cookCustomerRelationExists = false;
 
-        for (CookCustomer cookCustomer :
-                cooks) {
-            if (cookCustomer.getCook().getId() == id) {
-                cookCustomerRelationExists = true;
-                break;
+        if (cooks != null) {
+
+            for (CookCustomer cookCustomer :
+                    cooks) {
+                if (cookCustomer.getCook().getId() == id) {
+                    cookCustomerRelationExists = true;
+                    break;
+                }
             }
         }
         if (!cookCustomerRelationExists) {
