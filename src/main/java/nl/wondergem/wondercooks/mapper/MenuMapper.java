@@ -113,7 +113,9 @@ public class MenuMapper {
         menu.setDessert(menuInputDto.dessert);
         menu.setMenuDescription(menuInputDto.menuDescription);
         menu.setMenuPictureURL(menuInputDto.menuPictureURL);
-        menu.setMenuType(MenuType.valueOf(menuInputDto.menuType));
+        if(menuInputDto.menuType != null) {
+            menu.setMenuType(MenuType.valueOf(menuInputDto.menuType));
+        }
         menu.setWarmUpInstruction(menuInputDto.warmUpInstruction);
         menu.setOrderDeadline(menuInputDto.orderDeadline);
         menu.setStartDeliveryWindow(menuInputDto.startDeliveryWindow);

@@ -44,7 +44,7 @@ public class MenuController {
         } else {
             MenuDto menuDto = menuService.saveMenu(menuInputDto);
             URI uri = Util.uriGenerator(env.getProperty("apiPrefix") + "/menus/" + menuDto.id);
-            return ResponseEntity.created(uri).body("menu created");
+            return ResponseEntity.created(uri).header("Menu-id", String.valueOf(menuDto.id)).body("menu created");
         }
     }
 
