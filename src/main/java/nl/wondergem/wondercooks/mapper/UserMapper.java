@@ -1,6 +1,7 @@
 package nl.wondergem.wondercooks.mapper;
 
 
+import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.MenuDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
@@ -69,21 +70,21 @@ private final MenuMapper menuMapper;
             }
         }
 
-        Set<MenuDtoSmall> menusAsCook = new HashSet<>();
+        Set<MenuDto> menusAsCook = new HashSet<>();
 
         if(user.getMenusAsCook() != null) {
             for(Menu menu: user.getMenusAsCook()) {
-                MenuDtoSmall menuDtoSmall = menuMapper.menuToMenuDtoSmall(menu);
+                MenuDto menuDtoSmall = menuMapper.menuToMenuDto(menu);
                 menusAsCook.add(menuDtoSmall);
             }
         }
 
-        Set<MenuDtoSmall> menusAsCustomer = new HashSet<>();
+        Set<MenuDto> menusAsCustomer = new HashSet<>();
 
         if(user.getMenusAsCustomer() != null) {
             for(Menu menu: user.getMenusAsCustomer()) {
-                MenuDtoSmall menuDtoSmall = menuMapper.menuToMenuDtoSmall(menu);
-                menusAsCustomer.add(menuDtoSmall);
+                MenuDto menuDto = menuMapper.menuToMenuDto(menu);
+                menusAsCustomer.add(menuDto);
             }
         }
 
