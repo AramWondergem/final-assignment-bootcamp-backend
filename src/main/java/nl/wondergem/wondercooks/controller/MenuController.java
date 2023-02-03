@@ -85,4 +85,19 @@ public class MenuController {
         return ResponseEntity.ok("menu send to customers");
     }
 
+    // at menu
+
+    //update accepted order and order --> creating Delivery --
+
+    // update decline --> creating boolean for declined if so removing delivery
+
+    //update email sending for declined and accepted --> adding
+
+    //update email sending for ETA
+
+    //update tikkielink Sending
+
+
+    //
+
 }

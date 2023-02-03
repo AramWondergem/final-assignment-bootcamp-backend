@@ -67,7 +67,7 @@ public class OrderMapper {
 
     }
 
-    public Order OrderInputDtotoOrder(OrderInputDto orderInputDto, Order order){
+    public Order orderInputDtoToOrder(OrderInputDto orderInputDto, Order order){
 
         order.setMenu(menuRepository.getReferenceById(orderInputDto.getMenuId()));
         order.setOrderCustomer(userRepository.getReferenceById(orderInputDto.getOrderCustomerId()));
