@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
-public class UserDto {
+public class UserDtoSmall {
     public long id;
     public String email;
     public String username;
@@ -20,8 +20,5 @@ public class UserDto {
     public String allergies;
     public String allergiesExplanation;
     public String profilePicture;
-    public Collection<UserDtoSmall> customers;
-    public Collection<UserDtoSmall> cooks;
-    public Collection<MenuDto> menusAsCook;
-    public Collection<MenuDto> menusAsCustomers;
+
 }

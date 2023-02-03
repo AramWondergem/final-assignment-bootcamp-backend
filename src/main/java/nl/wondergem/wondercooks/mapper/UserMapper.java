@@ -1,25 +1,32 @@
 package nl.wondergem.wondercooks.mapper;
 
 
+import nl.wondergem.wondercooks.dto.MenuDto;
+import nl.wondergem.wondercooks.dto.MenuDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDto;
+import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserUpdateDto;
+import nl.wondergem.wondercooks.model.CookCustomer;
+import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class UserMapper {
 private final PasswordEncoder passwordEncoder;
+private final MenuMapper menuMapper;
 
 
-    public UserMapper(PasswordEncoder passwordEncoder) {
+    public UserMapper(PasswordEncoder passwordEncoder, MenuMapper menuMapper) {
         this.passwordEncoder = passwordEncoder;
 
+        this.menuMapper = menuMapper;
     }
 
 
@@ -37,7 +44,75 @@ private final PasswordEncoder passwordEncoder;
         userDto.setAllergiesExplanation(user.getAllergiesExplanation());
         userDto.setProfilePicture(user.getProfilePicture());
 
+        Set<UserDtoSmall> cooks = new HashSet<>();
+
+        if(user.getCookCustomerCustomerSide() != null) {
+
+            for (CookCustomer cookCustomer :
+                    user.getCookCustomerCustomerSide()) {
+
+                UserDtoSmall cook = userToUserDtoSmall(cookCustomer.getCook());
+                cooks.add(cook);
+
+            }
+        }
+
+
+        Set<UserDtoSmall> customers = new HashSet<>();
+
+        if(user.getCookCustomerCookSide() != null) {
+            for (CookCustomer cookCustomer :
+                    user.getCookCustomerCookSide()) {
+
+                UserDtoSmall customer = userToUserDtoSmall(cookCustomer.getCustomer());
+                customers.add(customer);
+
+            }
+        }
+
+        Set<MenuDto> menusAsCook = new HashSet<>();
+
+        if(user.getMenusAsCook() != null) {
+            for(Menu menu: user.getMenusAsCook()) {
+                MenuDto menuDtoSmall = menuMapper.menuToMenuDto(menu);
+                menusAsCook.add(menuDtoSmall);
+            }
+        }
+
+        Set<MenuDto> menusAsCustomer = new HashSet<>();
+
+        if(user.getMenusAsCustomer() != null) {
+            for(Menu menu: user.getMenusAsCustomer()) {
+                MenuDto menuDto = menuMapper.menuToMenuDto(menu);
+                menusAsCustomer.add(menuDto);
+            }
+        }
+
+
+        userDto.setCooks(cooks);
+        userDto.setCustomers(customers);
+        userDto.setMenusAsCook(menusAsCook);
+        userDto.setMenusAsCustomers(menusAsCustomer);
+
+
         return userDto;
+    }
+
+    public UserDtoSmall userToUserDtoSmall(User user){
+        UserDtoSmall userDtoSmall = new UserDtoSmall();
+        userDtoSmall.setEmail(user.getEmail());
+        userDtoSmall.setRoles(user.getRoles());
+        userDtoSmall.setUsername(user.getUsername());
+        userDtoSmall.setId(user.getId());
+        userDtoSmall.setStreetAndNumber(user.getStreetAndNumber());
+        userDtoSmall.setZipcode(user.getZipcode());
+        userDtoSmall.setCity(user.getCity());
+        userDtoSmall.setFavoriteColour(user.getFavoriteColour());
+        userDtoSmall.setAllergies(user.getAllergies());
+        userDtoSmall.setAllergiesExplanation(user.getAllergiesExplanation());
+        userDtoSmall.setProfilePicture(user.getProfilePicture());
+
+        return userDtoSmall;
     }
 
    public User userInputDtoToUser(UserInputDto userInputDto, Set<Role> roles){

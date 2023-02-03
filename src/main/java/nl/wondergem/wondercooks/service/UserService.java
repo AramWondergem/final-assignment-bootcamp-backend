@@ -10,6 +10,7 @@ import nl.wondergem.wondercooks.mapper.UserMapper;
 import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,15 +26,11 @@ public class UserService {
 
     private final UserRepository repos;
     private final UserMapper userMapper;
-//    private final AuthService authService;
-//
-//    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService){
+
+    public UserService(UserRepository userRepository, @Lazy UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService){
         this.repos = userRepository;
         this.userMapper = userMapper;
-//        this.authService = authService;
-//        this.passwordEncoder = passwordEncoder;
 
     }
 
@@ -55,11 +52,9 @@ public class UserService {
     }
 // todo misschien verwijderen
 
-//    public UserDto getUser(long id){
-//
-//        User user = repos.getReferenceById(id);
-//        return userMapper.userToUserDto(user);
-//    }
+    public User getUser(long id){
+        return repos.getReferenceById(id);
+    }
 
     public UserDto getUser(String email){
 

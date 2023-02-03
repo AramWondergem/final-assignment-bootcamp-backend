@@ -1,11 +1,11 @@
 package nl.wondergem.wondercooks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -15,7 +15,6 @@ import java.util.Set;
 public class User {
 
     private String username;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +35,23 @@ public class User {
     private String allergies;
     private String allergiesExplanation;
     private String profilePicture;
+
+    @OneToMany(mappedBy = "cook",fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<CookCustomer> cookCustomerCookSide;
+
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<CookCustomer> cookCustomerCustomerSide;
+
+    @OneToMany(mappedBy = "cook")
+    @JsonIgnore
+    private Set<Menu> menusAsCook;
+
+    @ManyToMany(mappedBy = "customers")
+    @JsonIgnore
+    private Set<Menu> menusAsCustomer;
+
 
     public void addRole(Role role) {
         roles.add(role);

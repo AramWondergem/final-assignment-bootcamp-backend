@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
 
     public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
-        this.userService = userService;
     }
 
     @PostMapping("")

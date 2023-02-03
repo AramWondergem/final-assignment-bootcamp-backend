@@ -16,7 +16,7 @@ public class GlobalCorsConfiguration {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST","PUT", "PATCH", "DELETE", "OPTIONS")
-                        .exposedHeaders("Authorization","Location");
+                        .exposedHeaders("Authorization","Location","Menu-id");
             }
         };
     }
