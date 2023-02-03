@@ -2,10 +2,12 @@ package nl.wondergem.wondercooks.mapper;
 
 import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.MenuDtoSmall;
+import nl.wondergem.wondercooks.dto.OrderDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.MenuType;
+import nl.wondergem.wondercooks.model.Order;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.service.UserService;
 import org.springframework.context.annotation.Lazy;
@@ -20,9 +22,12 @@ public class MenuMapper {
     private final UserMapper userMapper;
     private final UserService userService;
 
-    public MenuMapper(@Lazy UserMapper userMapper, UserService userService) {
+    private final OrderMapper orderMapper;
+
+    public MenuMapper(@Lazy UserMapper userMapper, UserService userService,@Lazy OrderMapper orderMapper) {
         this.userMapper = userMapper;
         this.userService = userService;
+        this.orderMapper = orderMapper;
     }
 
 
@@ -43,6 +48,18 @@ public class MenuMapper {
             }
         }
         menuDto.customers = customers;
+
+        Set<OrderDtoSmall> orders = new HashSet<>();
+
+        if(menu.getOrders() != null) {
+            for(Order order: menu.getOrders()) {
+                OrderDtoSmall orderDtoSmall = orderMapper.orderToOrderDtoSmall(order);
+                orders.add(orderDtoSmall);
+            }
+        }
+
+        menuDto.orders = orders;
+
         menuDto.title = menu.getTitle();
         menuDto.starter = menu.getStarter();
         menuDto.main = menu.getMain();

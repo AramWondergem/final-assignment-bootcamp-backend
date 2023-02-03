@@ -50,6 +50,10 @@ public class Menu {
     private String tikkieLink;
     private boolean sendToCustomers;
 
+    @OneToMany(mappedBy = "menu")
+    @JsonIgnore
+    private Set<Order> orders;
+
 
 
 }

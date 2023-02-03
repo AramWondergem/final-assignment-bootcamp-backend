@@ -30,4 +30,6 @@ public class MenuDto {
     public float priceMenu;
     public String tikkieLink;
     public boolean sendToCustomers;
+
+    public Collection<OrderDtoSmall> orders;
 }

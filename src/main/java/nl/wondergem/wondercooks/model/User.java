@@ -52,6 +52,10 @@ public class User {
     @JsonIgnore
     private Set<Menu> menusAsCustomer;
 
+    @OneToMany(mappedBy = "orderCustomer")
+    @JsonIgnore
+    private Set<Order> orders;
+
 
     public void addRole(Role role) {
         roles.add(role);
