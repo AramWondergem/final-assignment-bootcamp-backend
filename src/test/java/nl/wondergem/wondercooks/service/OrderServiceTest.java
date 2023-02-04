@@ -5,6 +5,7 @@ import nl.wondergem.wondercooks.dto.MenuDtoSmall;
 import nl.wondergem.wondercooks.dto.OrderDto;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.OrderInputDto;
+import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.OrderMapper;
 import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.MenuType;
@@ -12,6 +13,8 @@ import nl.wondergem.wondercooks.model.Order;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +27,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
@@ -39,6 +44,8 @@ class OrderServiceTest {
     private OrderInputDto orderInputDto;
 
     private Order order;
+
+    private Order updatedOrder;
 
     private OrderDto orderDto;
     private Menu menu;
@@ -116,7 +123,6 @@ class OrderServiceTest {
         userDtoSmall.username = "orderCustomer";
 
 
-
         menuDtoSmall = new MenuDtoSmall();
         menuDtoSmall.id = 1;
         menuDtoSmall.title = "Best Title ever";
@@ -151,6 +157,22 @@ class OrderServiceTest {
         order.setComments("hallo");
         order.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
 
+
+        updatedOrder = new Order();
+        updatedOrder.setId(1);
+        updatedOrder.setMenu(menu);
+        updatedOrder.setOrderCustomer(user1);
+        updatedOrder.setNumberOfMenus(2);
+        updatedOrder.setAllergies("Amandelen");
+        updatedOrder.setAllergiesExplanation("I will die");
+        updatedOrder.setStartDeliveryWindow(LocalTime.of(17, 0));
+        updatedOrder.setEndDeliveryWindow(LocalTime.of(18, 0));
+        updatedOrder.setStreetAndNumber("dorpsstraat 1");
+        updatedOrder.setZipcode("1412ZZ");
+        updatedOrder.setCity("City");
+        updatedOrder.setComments("hallo");
+        updatedOrder.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
+
         orderDto = new OrderDto();
         orderDto.setId(1);
         orderDto.setMenu(menuDtoSmall);
@@ -170,7 +192,8 @@ class OrderServiceTest {
 
 
     @Test
-    void saveOrder() {
+    @DisplayName("WhenAllFieldsAreFilledCorrectlyThenAOrderDtoIsReturned")
+    void saveOrder() throws Exception {
         //arrange
         Order emptyOrder = new Order();
         when(orderMapper.orderInputDtoToOrder(orderInputDto, emptyOrder)).thenReturn(order);
@@ -182,25 +205,100 @@ class OrderServiceTest {
         OrderDto result = orderService.saveOrder(orderInputDto);
 
         //assert
-        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto,emptyOrder);
+        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto, emptyOrder);
         verify(orderRepository, times(1)).save(order);
         verify(orderMapper, times(1)).orderToOrderDto(order);
         assertEquals(1, result.getId());
-        assertEquals(menuDtoSmall,result.getMenu());
-        assertEquals(userDtoSmall1,result.getOrderCustomer());
-        assertEquals(LocalDateTime.of(2020, 10, 10, 17, 0),result.getOrderDateAndTime());
+        assertEquals(menuDtoSmall, result.getMenu());
+        assertEquals(userDtoSmall1, result.getOrderCustomer());
+        assertEquals(LocalDateTime.of(2020, 10, 10, 17, 0), result.getOrderDateAndTime());
+
+    }
+
+    @Test
+    @DisplayName("WhenOrderDeadlineIsPastedThenABadRequestExceptionWillBeThrown")
+    void saveOrderAfterDeadline() {
+        //arrange
+        Order emptyOrder = new Order();
+        orderInputDto.setOrderDateAndTime(LocalDateTime.of(2026, 10, 10, 17, 0));
+        when(orderMapper.orderInputDtoToOrder(orderInputDto, emptyOrder)).thenReturn(order);
+
+        //act
+
+        Exception exception = assertThrows(BadRequestException.class, () -> orderService.saveOrder(orderInputDto));
+
+        //assert
+        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto, emptyOrder);
+        assertEquals("The order deadline already past", exception.getMessage());
 
     }
 
     @Test
     void getOrder() {
+        // arrange
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
+        //act
+        OrderDto result = orderService.getOrder(1);
+
+        //assert
+        assertEquals(orderDto.getId(), result.getId());
+        assertEquals(orderDto.getMenu(), result.getMenu());
+        assertEquals(orderDto.getOrderCustomer(), result.getOrderCustomer());
     }
 
     @Test
     void updateOrder() {
+        //arrange
+        orderInputDto.setAllergies("amandelen");
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        when(orderMapper.orderInputDtoToOrder(orderInputDto, order)).thenReturn(updatedOrder);
+        //act
+        orderService.updateOrder(orderInputDto, 1);
+        //assert
+        verify(orderRepository, times(1)).getReferenceById((long) 1);
+        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto, order);
+        verify(orderRepository, times(1)).save(updatedOrder);
+    }
+
+    @Test
+    void updateOrderWhenNumberOfMenusIsLowerInOrderInputDto() {
+        //arrange
+        orderInputDto.setAllergies("amandelen");
+        orderInputDto.setNumberOfMenus(1);
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        //act
+        Exception exception = assertThrows(BadRequestException.class, () -> orderService.updateOrder(orderInputDto, 1));
+        //assert
+        verify(orderRepository, times(1)).getReferenceById((long) 1);
+        assertEquals("You can not lower the amount of menu's.", exception.getMessage());
     }
 
     @Test
     void deleteOrder() {
+        //arrange
+
+        LocalDateTime localDateTimewithOneDayExtra = LocalDateTime.now().plusDays(1);
+        menuDtoSmall.orderDeadline = localDateTimewithOneDayExtra;
+
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
+        //act
+        orderService.deleteOrder(1);
+
+        //assert
+        verify(orderRepository, times(1)).deleteById((long) 1);
+    }
+
+    @Test
+    void deleteOrderWhenOrderDeadlineIsPassed() {
+        //arrange
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
+        //act
+        Exception exception = assertThrows(BadRequestException.class, () -> orderService.deleteOrder(1));
+
+        //assert
+        assertEquals("You can only delete a order when it is before the orderdeadline. The cook already bought groceries", exception.getMessage());
     }
 }

@@ -26,14 +26,14 @@ public class OrderService {
     }
 
 
-    public OrderDto saveOrder(OrderInputDto orderInputDto) {
+    public OrderDto saveOrder(OrderInputDto orderInputDto) throws Exception{
 
 
         Order emptyOrder = new Order();
 
         Order order = orderMapper.orderInputDtoToOrder(orderInputDto, emptyOrder);
 
-        if(order.getOrderDateAndTime().isBefore(order.getMenu().getOrderDeadline())) {
+        if(orderInputDto.getOrderDateAndTime().isBefore(order.getMenu().getOrderDeadline())) {
 
             Order orderReturned = orderRepository.save(order);
             return orderMapper.orderToOrderDto(orderReturned);
