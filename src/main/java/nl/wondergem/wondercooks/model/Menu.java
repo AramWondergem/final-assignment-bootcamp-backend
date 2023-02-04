@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -54,6 +55,16 @@ public class Menu {
     @JsonIgnore
     private Set<Order> orders;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Menu menu = (Menu) o;
+        return id == menu.id && numberOfMenus == menu.numberOfMenus && Float.compare(menu.priceMenu, priceMenu) == 0 && sendToCustomers == menu.sendToCustomers && Objects.equals(cook, menu.cook) && Objects.equals(customers, menu.customers) && Objects.equals(title, menu.title) && Objects.equals(starter, menu.starter) && Objects.equals(main, menu.main) && Objects.equals(side, menu.side) && Objects.equals(dessert, menu.dessert) && Objects.equals(menuDescription, menu.menuDescription) && Objects.equals(menuPictureURL, menu.menuPictureURL) && menuType == menu.menuType && Objects.equals(warmUpInstruction, menu.warmUpInstruction) && Objects.equals(orderDeadline, menu.orderDeadline) && Objects.equals(startDeliveryWindow, menu.startDeliveryWindow) && Objects.equals(endDeliveryWindow, menu.endDeliveryWindow) && Objects.equals(tikkieLink, menu.tikkieLink) && Objects.equals(orders, menu.orders);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cook, customers, title, starter, main, side, dessert, menuDescription, menuPictureURL, menuType, warmUpInstruction, orderDeadline, startDeliveryWindow, endDeliveryWindow, numberOfMenus, priceMenu, tikkieLink, sendToCustomers, orders);
+    }
 }

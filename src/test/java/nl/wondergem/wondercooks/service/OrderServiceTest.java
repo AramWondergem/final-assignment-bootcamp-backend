@@ -13,20 +13,25 @@ import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+@ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    private OrderMapper ordermapper;
+    OrderMapper orderMapper;
 
     @InjectMocks
     private OrderService orderService;
@@ -43,10 +48,9 @@ class OrderServiceTest {
     private User user1;
     private User user2;
 
-    MenuDtoSmall menuDtoSmall;
-    UserDtoSmall userDtoSmall;
-    UserDtoSmall userDtoSmall1;
-    UserDtoSmall userDtoSmall2;
+    private MenuDtoSmall menuDtoSmall;
+    private UserDtoSmall userDtoSmall;
+    private UserDtoSmall userDtoSmall1;
 
     @BeforeEach
     public void setup() {
@@ -167,6 +171,25 @@ class OrderServiceTest {
 
     @Test
     void saveOrder() {
+        //arrange
+        Order emptyOrder = new Order();
+        when(orderMapper.orderInputDtoToOrder(orderInputDto, emptyOrder)).thenReturn(order);
+        when(orderRepository.save(order)).thenReturn(order);
+        when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
+
+        //act
+
+        OrderDto result = orderService.saveOrder(orderInputDto);
+
+        //assert
+        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto,emptyOrder);
+        verify(orderRepository, times(1)).save(order);
+        verify(orderMapper, times(1)).orderToOrderDto(order);
+        assertEquals(1, result.getId());
+        assertEquals(menuDtoSmall,result.getMenu());
+        assertEquals(userDtoSmall1,result.getOrderCustomer());
+        assertEquals(LocalDateTime.of(2020, 10, 10, 17, 0),result.getOrderDateAndTime());
+
     }
 
     @Test
