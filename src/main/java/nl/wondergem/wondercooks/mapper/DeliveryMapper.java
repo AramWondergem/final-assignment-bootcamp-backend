@@ -29,7 +29,20 @@ public class DeliveryMapper {
 
         deliveryDto.setETA(deliveryDto.getETA());
         deliveryDto.setPaid(deliveryDto.isPaid());
-        deliveryDto.setOrder(orderMapper.orderToOrderDto(delivery.getOrder()));
+        if(delivery.getOrder()!=null) {
+            deliveryDto.setOrder(orderMapper.orderToOrderDto(delivery.getOrder()));
+        }
+
+        return deliveryDto;
+
+    }
+
+    public DeliveryDto deliveryToDeliveryDtoReturn(Delivery delivery) {
+        DeliveryDto deliveryDto = new DeliveryDto();
+
+        deliveryDto.setId(delivery.getId());
+        deliveryDto.setETA(deliveryDto.getETA());
+        deliveryDto.setPaid(deliveryDto.isPaid());
 
         return deliveryDto;
 

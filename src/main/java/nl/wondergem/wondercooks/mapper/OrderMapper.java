@@ -45,7 +45,9 @@ public class OrderMapper {
         orderDto.setCity(order.getCity());
         orderDto.setComments(order.getComments());
         orderDto.setOrderDateAndTime(order.getOrderDateAndTime());
-        orderDto.setDelivery(deliveryMapper.deliveryToDeliveryDto(order.getDelivery()));
+        if(order.getDelivery()!=null) {
+            orderDto.setDelivery(deliveryMapper.deliveryToDeliveryDtoReturn(order.getDelivery()));
+        }
         orderDto.setDeclined(order.isDeclined());
     return orderDto;
     }
