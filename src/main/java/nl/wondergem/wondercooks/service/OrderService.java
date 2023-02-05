@@ -54,7 +54,7 @@ public class OrderService {
 
         if(orderInputDto.getNumberOfMenus() >= orderToBeUpdated.getNumberOfMenus()) {
 
-            Order updatedOrder = orderMapper.orderInputDtoToOrder(orderInputDto, orderToBeUpdated);
+            Order updatedOrder = orderMapper.orderInputDtoToOrderUpdate(orderInputDto, orderToBeUpdated);
 
             orderRepository.save(updatedOrder);
         } else {

@@ -85,4 +85,22 @@ public class OrderMapper {
         return order;
 
     }
+
+    public Order orderInputDtoToOrderUpdate(OrderInputDto orderInputDto, Order order){
+
+        order.setMenu(menuRepository.getReferenceById(orderInputDto.getMenuId()));
+        order.setOrderCustomer(userRepository.getReferenceById(orderInputDto.getOrderCustomerId()));
+        order.setNumberOfMenus(orderInputDto.getNumberOfMenus());
+        order.setAllergies(orderInputDto.getAllergies());
+        order.setAllergiesExplanation(orderInputDto.getAllergiesExplanation());
+        order.setStartDeliveryWindow(orderInputDto.getStartDeliveryWindow());
+        order.setEndDeliveryWindow(orderInputDto.getEndDeliveryWindow());
+        order.setStreetAndNumber(orderInputDto.getStreetAndNumber());
+        order.setZipcode(orderInputDto.getZipcode());
+        order.setCity(orderInputDto.getCity());
+        order.setComments(orderInputDto.getComments());
+
+        return order;
+
+    }
 }

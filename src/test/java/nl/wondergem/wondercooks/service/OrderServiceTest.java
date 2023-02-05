@@ -119,8 +119,8 @@ class OrderServiceTest {
         userDtoSmall.username = "cook";
 
         userDtoSmall1 = new UserDtoSmall();
-        userDtoSmall.id = 2;
-        userDtoSmall.username = "orderCustomer";
+        userDtoSmall1.id = 2;
+        userDtoSmall1.username = "orderCustomer";
 
 
         menuDtoSmall = new MenuDtoSmall();
@@ -252,12 +252,12 @@ class OrderServiceTest {
         //arrange
         orderInputDto.setAllergies("amandelen");
         when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
-        when(orderMapper.orderInputDtoToOrder(orderInputDto, order)).thenReturn(updatedOrder);
+        when(orderMapper.orderInputDtoToOrderUpdate(orderInputDto, order)).thenReturn(updatedOrder);
         //act
         orderService.updateOrder(orderInputDto, 1);
         //assert
         verify(orderRepository, times(1)).getReferenceById((long) 1);
-        verify(orderMapper, times(1)).orderInputDtoToOrder(orderInputDto, order);
+        verify(orderMapper, times(1)).orderInputDtoToOrderUpdate(orderInputDto, order);
         verify(orderRepository, times(1)).save(updatedOrder);
     }
 
