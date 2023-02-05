@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeliveryMapper {
 
-    public Delivery DeliveryDtoToDelivery(DeliveryDto deliveryDto,Delivery delivery) {
+    public Delivery deliveryDtoToDelivery(DeliveryDto deliveryDto,Delivery delivery) {
 
         delivery.setETA(deliveryDto.getETA());
         delivery.setPaid(deliveryDto.isPaid());
@@ -15,7 +15,7 @@ public class DeliveryMapper {
         return delivery;
 
     }
-    public DeliveryDto DeliveryToDeliveryDto(Delivery delivery) {
+    public DeliveryDto deliveryToDeliveryDto(Delivery delivery) {
         DeliveryDto deliveryDto = new DeliveryDto();
 
         deliveryDto.setETA(deliveryDto.getETA());

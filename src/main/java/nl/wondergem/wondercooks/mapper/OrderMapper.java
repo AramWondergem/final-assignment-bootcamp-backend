@@ -45,7 +45,7 @@ public class OrderMapper {
         orderDto.setCity(order.getCity());
         orderDto.setComments(order.getComments());
         orderDto.setOrderDateAndTime(order.getOrderDateAndTime());
-        orderDto.setDelivery(deliveryMapper.DeliveryToDeliveryDto(order.getDelivery()));
+        orderDto.setDelivery(deliveryMapper.deliveryToDeliveryDto(order.getDelivery()));
     return orderDto;
     }
 
