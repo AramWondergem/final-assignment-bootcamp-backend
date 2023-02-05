@@ -2,6 +2,7 @@ package nl.wondergem.wondercooks.mapper;
 
 import nl.wondergem.wondercooks.dto.DeliveryDto;
 import nl.wondergem.wondercooks.model.Delivery;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,7 +10,7 @@ public class DeliveryMapper {
 
     private final OrderMapper orderMapper;
 
-    public DeliveryMapper(OrderMapper orderMapper) {
+    public DeliveryMapper(@Lazy OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
     }
 
