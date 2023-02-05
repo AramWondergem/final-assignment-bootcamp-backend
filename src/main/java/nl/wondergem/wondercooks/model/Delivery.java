@@ -1,5 +1,6 @@
 package nl.wondergem.wondercooks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,16 +23,20 @@ public class Delivery {
 
     private LocalTime ETA;
 
+    @OneToOne(mappedBy = "delivery")
+    @JsonIgnore
+    private Order order;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Delivery delivery = (Delivery) o;
-        return id == delivery.id && paid == delivery.paid && Objects.equals(ETA, delivery.ETA);
+        return id == delivery.id && paid == delivery.paid && Objects.equals(ETA, delivery.ETA) && Objects.equals(order, delivery.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, paid, ETA);
+        return Objects.hash(id, paid, ETA, order);
     }
 }

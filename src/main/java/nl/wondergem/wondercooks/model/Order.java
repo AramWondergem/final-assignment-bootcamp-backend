@@ -38,6 +38,8 @@ public class Order {
     private String comments;
     private LocalDateTime orderDateAndTime;
 
+    private boolean declined;
+
     @OneToOne
     @JsonIgnore
     private Delivery delivery;
@@ -47,11 +49,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && numberOfMenus == order.numberOfMenus && Objects.equals(menu, order.menu) && Objects.equals(orderCustomer, order.orderCustomer) && Objects.equals(allergies, order.allergies) && Objects.equals(allergiesExplanation, order.allergiesExplanation) && Objects.equals(startDeliveryWindow, order.startDeliveryWindow) && Objects.equals(endDeliveryWindow, order.endDeliveryWindow) && Objects.equals(streetAndNumber, order.streetAndNumber) && Objects.equals(zipcode, order.zipcode) && Objects.equals(city, order.city) && Objects.equals(comments, order.comments) && Objects.equals(orderDateAndTime, order.orderDateAndTime) && Objects.equals(delivery, order.delivery);
+        return id == order.id && numberOfMenus == order.numberOfMenus && declined == order.declined && Objects.equals(menu, order.menu) && Objects.equals(orderCustomer, order.orderCustomer) && Objects.equals(allergies, order.allergies) && Objects.equals(allergiesExplanation, order.allergiesExplanation) && Objects.equals(startDeliveryWindow, order.startDeliveryWindow) && Objects.equals(endDeliveryWindow, order.endDeliveryWindow) && Objects.equals(streetAndNumber, order.streetAndNumber) && Objects.equals(zipcode, order.zipcode) && Objects.equals(city, order.city) && Objects.equals(comments, order.comments) && Objects.equals(orderDateAndTime, order.orderDateAndTime) && Objects.equals(delivery, order.delivery);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, menu, orderCustomer, numberOfMenus, allergies, allergiesExplanation, startDeliveryWindow, endDeliveryWindow, streetAndNumber, zipcode, city, comments, orderDateAndTime, delivery);
+        return Objects.hash(id, menu, orderCustomer, numberOfMenus, allergies, allergiesExplanation, startDeliveryWindow, endDeliveryWindow, streetAndNumber, zipcode, city, comments, orderDateAndTime, declined, delivery);
     }
 }

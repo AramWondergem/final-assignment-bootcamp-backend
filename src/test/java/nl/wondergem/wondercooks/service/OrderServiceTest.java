@@ -1,16 +1,11 @@
 package nl.wondergem.wondercooks.service;
 
-import nl.wondergem.wondercooks.dto.MenuDto;
-import nl.wondergem.wondercooks.dto.MenuDtoSmall;
-import nl.wondergem.wondercooks.dto.OrderDto;
-import nl.wondergem.wondercooks.dto.UserDtoSmall;
+import nl.wondergem.wondercooks.dto.*;
 import nl.wondergem.wondercooks.dto.inputDto.OrderInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
+import nl.wondergem.wondercooks.mapper.DeliveryMapper;
 import nl.wondergem.wondercooks.mapper.OrderMapper;
-import nl.wondergem.wondercooks.model.Menu;
-import nl.wondergem.wondercooks.model.MenuType;
-import nl.wondergem.wondercooks.model.Order;
-import nl.wondergem.wondercooks.model.User;
+import nl.wondergem.wondercooks.model.*;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -36,7 +31,13 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    OrderMapper orderMapper;
+    private OrderMapper orderMapper;
+
+    @Mock
+    private DeliveryService deliveryService;
+
+    @Mock
+    private DeliveryMapper deliveryMapper;
 
     @InjectMocks
     private OrderService orderService;
@@ -300,5 +301,48 @@ class OrderServiceTest {
 
         //assert
         assertEquals("You can only delete a order when it is before the orderdeadline. The cook already bought groceries", exception.getMessage());
+    }
+
+    @Test
+    void acceptOrder() {
+        //arrange
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        DeliveryDto deliveryDto = new DeliveryDto();
+        DeliveryDto saveResult = new DeliveryDto();
+        saveResult.setId(1);
+        Delivery emptyDelivery = new Delivery();
+        Delivery delivery = new Delivery();
+        delivery.setId(1);
+
+        order.setDelivery(delivery);
+
+        when(deliveryService.saveDelivery(deliveryDto)).thenReturn(saveResult);
+        when(deliveryMapper.deliveryDtoToDelivery(saveResult,emptyDelivery)).thenReturn(delivery);
+        //act
+
+        orderService.acceptOrder(1);
+
+        //assert
+        verify(orderRepository, times(1)).getReferenceById((long) 1);
+        verify(deliveryService,times(1)).saveDelivery(deliveryDto);
+        verify(deliveryMapper,times(1)).deliveryDtoToDelivery(saveResult,emptyDelivery);
+        verify(orderRepository,times(1)).save(order);
+
+
+    }
+
+    @Test
+    void declineOrder() {
+        //arrange
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        order.isDeclined();
+
+        //act
+        orderService.declineOrder(1);
+
+        //assert
+        verify(orderRepository,times(1)).getReferenceById((long)1);
+        verify(orderRepository,times(1)).save(order);
+
     }
 }

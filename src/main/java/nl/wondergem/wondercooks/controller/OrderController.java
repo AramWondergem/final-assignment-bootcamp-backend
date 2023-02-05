@@ -76,6 +76,18 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/accept/{id}")
+    public ResponseEntity<Object> acceptOrder(@PathVariable long id) {
+        orderService.acceptOrder(id);
+        return ResponseEntity.ok("order accepted");
+    }
+
+    @PutMapping("/decline/{id}")
+    public ResponseEntity<Object> declineOrder(@PathVariable long id) {
+        orderService.declineOrder(id);
+        return ResponseEntity.ok("order declined");
+    }
+
 
 
 

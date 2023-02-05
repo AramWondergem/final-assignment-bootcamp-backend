@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -258,5 +257,19 @@ class UserServiceTest {
         assertEquals("Pink", result.favoriteColour);
         assertEquals("salmon", result.allergies);
         assertEquals("I will die", result.allergiesExplanation);
+    }
+
+    @Test
+    void testGetUser() {
+        //arrange
+        when(repos.getReferenceById((long)1)).thenReturn(newUser);
+
+        //act
+        User result = userService.getUser(1);
+
+        //assert
+        verify(repos, times(1)).getReferenceById((long)1);
+        assertEquals(newUser.getId(),result.getId());
+        assertEquals(newUser.getUsername(),result.getUsername());
     }
 }

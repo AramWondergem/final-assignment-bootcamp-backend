@@ -85,17 +85,30 @@ public class MenuController {
         return ResponseEntity.ok("menu send to customers");
     }
 
-    // at menu
+    @PutMapping("/send/accepted/{id}")
+    public ResponseEntity<Object> sendAcceptMails(@PathVariable long id) {
+        menuService.sendAcceptMails(id);
+        return ResponseEntity.ok("mails send to accepted orders");
+    }
 
-    //update accepted order and order --> creating Delivery --
+    @PutMapping("/send/declined/{id}")
+    public ResponseEntity<Object> sendDeclineMails(@PathVariable long id) {
+        menuService.sendDeclineMails(id);
+        return ResponseEntity.ok("mails send to declined orders");
+    }
 
-    // update decline --> creating boolean for declined if so removing delivery
+    @PutMapping("/send/tikkie/{id}")
+    public ResponseEntity<Object> sendTikkie(@PathVariable long id) {
+        menuService.sendTikkie(id);
+        return ResponseEntity.ok("tikkielink update is sent");
+    }
 
-    //update email sending for declined and accepted --> adding
+
+
+
 
     //update email sending for ETA
 
-    //update tikkielink Sending
 
 
     //

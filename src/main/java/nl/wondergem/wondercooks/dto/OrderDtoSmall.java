@@ -21,4 +21,5 @@ public class OrderDtoSmall {
     private String comments;
     private LocalDateTime orderDateAndTime;
     private DeliveryDto delivery;
+    private boolean declined;
 }

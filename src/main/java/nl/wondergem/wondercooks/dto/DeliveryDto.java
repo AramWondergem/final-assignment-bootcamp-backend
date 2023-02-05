@@ -18,16 +18,18 @@ public class DeliveryDto {
 
     private LocalTime ETA;
 
+    private OrderDto order;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeliveryDto that = (DeliveryDto) o;
-        return id == that.id && paid == that.paid && Objects.equals(ETA, that.ETA);
+        return id == that.id && paid == that.paid && Objects.equals(ETA, that.ETA) && Objects.equals(order, that.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, paid, ETA);
+        return Objects.hash(id, paid, ETA, order);
     }
 }

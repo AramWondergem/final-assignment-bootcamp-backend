@@ -64,4 +64,10 @@ class DeliveryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("delivery updated"));
     }
+
+    @Test
+    void sendETA() throws Exception {
+        //Act and Assert
+        mockMvc.perform(put("/v1/deliveries/eta/1")).andExpect(status().isOk()).andExpect(content().string("ETA is sent to customer"));
+    }
 }

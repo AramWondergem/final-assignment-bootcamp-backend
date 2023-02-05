@@ -164,4 +164,22 @@ class MenuControllerTest {
         //Act and Assert
         mockMvc.perform(put("/v1/menus/send/1")).andExpect(status().isOk()).andExpect(content().string("menu send to customers"));
     }
+
+    @Test
+    void sendAcceptMails() throws Exception {
+        //Act and Assert
+        mockMvc.perform(put("/v1/menus/send/accepted/1")).andExpect(status().isOk()).andExpect(content().string("mails send to accepted orders"));
+    }
+
+    @Test
+    void sendDeclineMails() throws Exception {
+        //Act and Assert
+        mockMvc.perform(put("/v1/menus/send/declined/1")).andExpect(status().isOk()).andExpect(content().string("mails send to declined orders"));
+    }
+
+    @Test
+    void sendTikkie() throws Exception {
+        //Act and Assert
+        mockMvc.perform(put("/v1/menus/send/tikkie/1")).andExpect(status().isOk()).andExpect(content().string("tikkielink update is sent"));
+    }
 }

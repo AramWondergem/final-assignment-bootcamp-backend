@@ -172,4 +172,17 @@ class OrderControllerTest {
         //Act and assert
         mockMvc.perform(delete("/v1/orders/1")).andExpect(status().isNoContent());
     }
+
+    @Test
+    void acceptOrder() throws Exception {
+        //Act and assert
+        mockMvc.perform(put("/v1/orders/accept/1")).andExpect(status().isOk())
+                .andExpect(content().string("order accepted"));
+    }
+    @Test
+    void declineOrder() throws Exception {
+        //Act and assert
+        mockMvc.perform(put("/v1/orders/decline/1")).andExpect(status().isOk())
+                .andExpect(content().string("order declined"));
+    }
 }

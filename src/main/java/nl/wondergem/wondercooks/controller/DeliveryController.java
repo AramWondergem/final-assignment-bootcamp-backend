@@ -35,6 +35,14 @@ public class DeliveryController {
         }
     }
 
+    @PutMapping("/eta/{id}")
+    public ResponseEntity<Object> sendETA(@PathVariable long id) {
+
+            deliveryService.sendETA(id);
+            return ResponseEntity.ok("ETA is sent to customer");
+
+    }
+
 
 
 

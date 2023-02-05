@@ -5,6 +5,7 @@ import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.mapper.MenuMapper;
 import nl.wondergem.wondercooks.model.EmailDetails;
 import nl.wondergem.wondercooks.model.Menu;
+import nl.wondergem.wondercooks.model.Order;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.MenuRepository;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,57 @@ public class MenuService {
 
         menuRepository.save(menuToBeUpdated);
     }
+
+    public void sendAcceptMails(long id){
+
+        Menu menu = menuRepository.getReferenceById(id);
+
+        Set<Order> orders = menu.getOrders();
+
+
+
+        for (Order order:
+                orders) {
+
+            if(order.getDelivery() != null) {
+                EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "Your order is accepted", "Accepted order");
+                emailService.sendSimpleMail(emailDetails);
+            }
+        }
+
+    }
+
+    public void sendDeclineMails(long id){
+
+        Menu menu = menuRepository.getReferenceById(id);
+
+        Set<Order> orders = menu.getOrders();
+
+        for (Order order:
+                orders) {
+
+            if(order.isDeclined()) {
+                EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "Your order is declined", "declined order");
+                emailService.sendSimpleMail(emailDetails);
+            }
+        }
+    }
+
+    public void sendTikkie(long id){
+
+        Menu menu = menuRepository.getReferenceById(id);
+
+        Set<Order> orders = menu.getOrders();
+
+        for (Order order:
+                orders) {
+
+            if(order.getDelivery() != null) {
+                EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "tikkie-link is available in your account", "tikkie-link");
+                emailService.sendSimpleMail(emailDetails);
+            }
+        }
+    }
+
 
 }

@@ -50,7 +50,6 @@ public class UserService {
         }
 
     }
-// todo misschien verwijderen
 
     public User getUser(long id){
         return repos.getReferenceById(id);
