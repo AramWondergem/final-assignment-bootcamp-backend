@@ -66,6 +66,7 @@ public class OrderMapper {
         orderDtoSmall.setComments(order.getComments());
         orderDtoSmall.setOrderDateAndTime(order.getOrderDateAndTime());
         orderDtoSmall.setDeclined(order.isDeclined());
+        orderDtoSmall.setMenuId(order.getMenu().getId());
         return orderDtoSmall;
 
 

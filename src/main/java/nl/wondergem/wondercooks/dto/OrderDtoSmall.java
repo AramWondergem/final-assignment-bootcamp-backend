@@ -22,4 +22,5 @@ public class OrderDtoSmall {
     private LocalDateTime orderDateAndTime;
     private DeliveryDto delivery;
     private boolean declined;
+    private long menuId;
 }
