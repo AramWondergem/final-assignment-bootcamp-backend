@@ -52,8 +52,5 @@ public class Order {
         return id == order.id && numberOfMenus == order.numberOfMenus && declined == order.declined && Objects.equals(menu, order.menu) && Objects.equals(orderCustomer, order.orderCustomer) && Objects.equals(allergies, order.allergies) && Objects.equals(allergiesExplanation, order.allergiesExplanation) && Objects.equals(startDeliveryWindow, order.startDeliveryWindow) && Objects.equals(endDeliveryWindow, order.endDeliveryWindow) && Objects.equals(streetAndNumber, order.streetAndNumber) && Objects.equals(zipcode, order.zipcode) && Objects.equals(city, order.city) && Objects.equals(comments, order.comments) && Objects.equals(orderDateAndTime, order.orderDateAndTime) && Objects.equals(delivery, order.delivery);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, menu, orderCustomer, numberOfMenus, allergies, allergiesExplanation, startDeliveryWindow, endDeliveryWindow, streetAndNumber, zipcode, city, comments, orderDateAndTime, declined, delivery);
-    }
+
 }

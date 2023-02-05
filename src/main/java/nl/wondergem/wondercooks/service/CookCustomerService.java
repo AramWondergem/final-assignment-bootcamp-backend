@@ -99,4 +99,8 @@ public class CookCustomerService {
         }
 
     }
+
+    public void deleteCookCustomer(long id){
+        cookCustomerRepository.deleteById(id);
+    }
 }

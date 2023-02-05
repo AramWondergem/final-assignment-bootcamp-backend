@@ -8,6 +8,7 @@ import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.Order;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.MenuRepository;
+import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,11 +21,17 @@ public class MenuService {
     private final MenuMapper menuMapper;
 
     private final EmailServiceImpl emailService;
+    
+    private final OrderRepository orderRepository;
 
-    public MenuService(MenuRepository menuRepository, MenuMapper menuMapper, EmailServiceImpl emailService) {
+    private final OrderService orderService;
+
+    public MenuService(MenuRepository menuRepository, MenuMapper menuMapper, EmailServiceImpl emailService, OrderRepository orderRepository, OrderService orderService) {
         this.menuRepository = menuRepository;
         this.menuMapper = menuMapper;
         this.emailService = emailService;
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
     }
 
     public MenuDto saveMenu(MenuInputDto menuInputDto) {
@@ -53,6 +60,20 @@ public class MenuService {
     }
 
     public void deleteMenu(long id){
+        
+        Menu menu = menuRepository.getReferenceById(id);
+        
+        Set<Order> orders = menu.getOrders();
+        
+        if(orders.size()>0) {
+
+            for (Order order :
+                    orders) {
+                orderService.deleteOrder(order.getId());
+            }
+            
+        }
+        
         menuRepository.deleteById(id);
     }
 
@@ -125,6 +146,14 @@ public class MenuService {
                 emailService.sendSimpleMail(emailDetails);
             }
         }
+    }
+
+    public void removeCustomer(User user, long menuId) {
+
+        Menu menu = menuRepository.getReferenceById(menuId);
+
+        menu.getCustomers().remove(user);
+
     }
 
 

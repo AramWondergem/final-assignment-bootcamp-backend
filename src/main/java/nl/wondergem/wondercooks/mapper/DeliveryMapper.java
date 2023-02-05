@@ -18,7 +18,9 @@ public class DeliveryMapper {
 
         delivery.setETA(deliveryDto.getETA());
         delivery.setPaid(deliveryDto.isPaid());
-        delivery.setId(deliveryDto.getId());
+        if(deliveryDto.getId()!=0) {
+            delivery.setId(deliveryDto.getId());
+        }
 
 
         return delivery;

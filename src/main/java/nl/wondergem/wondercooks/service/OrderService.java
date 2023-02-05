@@ -81,6 +81,9 @@ public class OrderService {
 
         if(LocalDateTime.now().isBefore(orderToBeDeleted.getMenu().orderDeadline)) {
             orderRepository.deleteById(id);
+            if(orderToBeDeleted.getDelivery() != null){
+                deliveryService.deleteDelivery(orderToBeDeleted.getDelivery().getId());
+            }
         } else {
             throw new BadRequestException("You can only delete a order when it is before the orderdeadline. The cook already bought groceries");
         }
