@@ -23,4 +23,5 @@ public class OrderDtoSmall {
     private DeliveryDto delivery;
     private boolean declined;
     private long menuId;
+    private UserDtoSmall customer;
 }

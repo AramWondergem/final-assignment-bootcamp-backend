@@ -71,6 +71,7 @@ public class OrderMapper {
             orderDtoSmall.setDelivery(deliveryMapper.deliveryToDeliveryDtoReturn(order.getDelivery()));
         }
         orderDtoSmall.setDeclined(order.isDeclined());
+        orderDtoSmall.setCustomer(userMapper.userToUserDtoSmall(order.getOrderCustomer()));
 
         return orderDtoSmall;
 

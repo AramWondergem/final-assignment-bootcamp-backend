@@ -101,6 +101,7 @@ public class OrderService {
 
 
         order.setDelivery(emptyDelivery);
+        order.setDeclined(false);
         orderRepository.save(order);
 
 
