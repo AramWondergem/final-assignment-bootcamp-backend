@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -21,9 +22,9 @@ public class Delivery {
 
     private boolean paid;
 
-    private LocalTime ETA;
+    private LocalDateTime ETA;
 
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", cascade = CascadeType.ALL)
     @JsonIgnore
     private Order order;
 

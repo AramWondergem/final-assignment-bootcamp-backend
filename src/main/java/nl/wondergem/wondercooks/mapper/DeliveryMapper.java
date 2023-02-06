@@ -43,8 +43,8 @@ public class DeliveryMapper {
         DeliveryDto deliveryDto = new DeliveryDto();
 
         deliveryDto.setId(delivery.getId());
-        deliveryDto.setETA(deliveryDto.getETA());
-        deliveryDto.setPaid(deliveryDto.isPaid());
+        deliveryDto.setETA(delivery.getETA());
+        deliveryDto.setPaid(delivery.isPaid());
 
         return deliveryDto;
 

@@ -67,6 +67,11 @@ public class OrderMapper {
         orderDtoSmall.setOrderDateAndTime(order.getOrderDateAndTime());
         orderDtoSmall.setDeclined(order.isDeclined());
         orderDtoSmall.setMenuId(order.getMenu().getId());
+        if(order.getDelivery()!=null) {
+            orderDtoSmall.setDelivery(deliveryMapper.deliveryToDeliveryDtoReturn(order.getDelivery()));
+        }
+        orderDtoSmall.setDeclined(order.isDeclined());
+
         return orderDtoSmall;
 
 
