@@ -38,14 +38,14 @@ public class OrderService {
     }
 
 
-    public OrderDto saveOrder(OrderInputDto orderInputDto) throws Exception{
+    public OrderDto saveOrder(OrderInputDto orderInputDto) throws Exception {
 
 
         Order emptyOrder = new Order();
 
         Order order = orderMapper.orderInputDtoToOrder(orderInputDto, emptyOrder);
 
-        if(orderInputDto.getOrderDateAndTime().isBefore(order.getMenu().getOrderDeadline())) {
+        if (orderInputDto.getOrderDateAndTime().isBefore(order.getMenu().getOrderDeadline())) {
 
             Order orderReturned = orderRepository.save(order);
             return orderMapper.orderToOrderDto(orderReturned);
@@ -60,11 +60,11 @@ public class OrderService {
         return orderMapper.orderToOrderDto(orderRepository.getReferenceById(id));
     }
 
-    public void updateOrder(OrderInputDto orderInputDto,long id){
+    public void updateOrder(OrderInputDto orderInputDto, long id) {
 
         Order orderToBeUpdated = orderRepository.getReferenceById(id);
 
-        if(orderInputDto.getNumberOfMenus() >= orderToBeUpdated.getNumberOfMenus()) {
+        if (orderInputDto.getNumberOfMenus() >= orderToBeUpdated.getNumberOfMenus()) {
 
             Order updatedOrder = orderMapper.orderInputDtoToOrderUpdate(orderInputDto, orderToBeUpdated);
 
@@ -75,13 +75,13 @@ public class OrderService {
 
     }
 
-    public void deleteOrder(long id){
+    public void deleteOrder(long id) {
 
         OrderDto orderToBeDeleted = getOrder(id);
 
-        if(LocalDateTime.now().isBefore(orderToBeDeleted.getMenu().orderDeadline)) {
+        if (LocalDateTime.now().isBefore(orderToBeDeleted.getMenu().orderDeadline)) {
             orderRepository.deleteById(id);
-            if(orderToBeDeleted.getDelivery() != null){
+            if (orderToBeDeleted.getDelivery() != null) {
                 deliveryService.deleteDelivery(orderToBeDeleted.getDelivery().getId());
             }
         } else {
@@ -91,23 +91,23 @@ public class OrderService {
 
     }
 
-    public void acceptOrder(long id){
+    public void acceptOrder(long id) {
         Order order = orderRepository.getReferenceById(id);
 
-//        DeliveryDto deliveryDto = new DeliveryDto();
-//        DeliveryDto saveResult = deliveryService.saveDelivery(deliveryDto);
-        Delivery emptyDelivery = new Delivery();
-        deliveryRepository.save(emptyDelivery);
+        //if there is already delivery, the order is already accepted
+        if (order.getDelivery() == null) {
+            Delivery emptyDelivery = new Delivery();
+            deliveryRepository.save(emptyDelivery);
 
 
-        order.setDelivery(emptyDelivery);
-        order.setDeclined(false);
-        orderRepository.save(order);
-
+            order.setDelivery(emptyDelivery);
+            order.setDeclined(false);
+            orderRepository.save(order);
+        }
 
     }
 
-    public void declineOrder(long id){
+    public void declineOrder(long id) {
         Order order = orderRepository.getReferenceById(id);
         order.setDeclined(true);
         order.setDelivery(null);
