@@ -8,7 +8,6 @@ import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.CookCustomerRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
 import nl.wondergem.wondercooks.security.MyUserDetails;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

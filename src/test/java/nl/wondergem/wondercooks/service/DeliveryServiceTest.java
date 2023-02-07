@@ -50,17 +50,17 @@ class DeliveryServiceTest {
     @BeforeEach
     void setUp() {
         deliveryDto = new DeliveryDto();
-        deliveryDto.setETA(LocalTime.of(17, 0));
+        deliveryDto.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
         deliveryDto.setPaid(false);
 
         deliveryDtoReturn = new DeliveryDto();
-        deliveryDtoReturn.setETA(LocalTime.of(17, 0));
+        deliveryDtoReturn.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
         deliveryDtoReturn.setPaid(false);
         deliveryDtoReturn.setId(1);
 
         delivery = new Delivery();
         delivery.setPaid(false);
-        delivery.setETA(LocalTime.of(17,0));
+        delivery.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
         delivery.setId(1);
 
         user = new User();

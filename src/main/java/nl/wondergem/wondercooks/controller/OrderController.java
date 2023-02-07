@@ -1,8 +1,6 @@
 package nl.wondergem.wondercooks.controller;
 
-import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.OrderDto;
-import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.dto.inputDto.OrderInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.OrderService;

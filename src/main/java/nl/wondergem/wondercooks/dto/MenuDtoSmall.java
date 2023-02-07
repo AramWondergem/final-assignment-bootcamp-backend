@@ -2,9 +2,7 @@ package nl.wondergem.wondercooks.dto;
 
 import nl.wondergem.wondercooks.model.MenuType;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Objects;
 
 public class MenuDtoSmall {

@@ -1,18 +1,13 @@
 package nl.wondergem.wondercooks.controller;
 
 import nl.wondergem.wondercooks.dto.MenuDto;
-import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
-import nl.wondergem.wondercooks.model.EmailDetails;
-import nl.wondergem.wondercooks.service.EmailServiceImpl;
 import nl.wondergem.wondercooks.service.MenuService;
 import nl.wondergem.wondercooks.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

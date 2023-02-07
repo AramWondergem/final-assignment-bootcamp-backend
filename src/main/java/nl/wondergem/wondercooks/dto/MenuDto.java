@@ -1,14 +1,9 @@
 package nl.wondergem.wondercooks.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import nl.wondergem.wondercooks.model.MenuType;
-import nl.wondergem.wondercooks.model.User;
 
-import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
 
 public class MenuDto {
     public long id;

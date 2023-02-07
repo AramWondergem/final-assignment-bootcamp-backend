@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +58,7 @@ class DeliveryControllerTest {
         DeliveryDto deliveryDto = new DeliveryDto();
 
         deliveryDto.setPaid(false);
-        deliveryDto.setETA(LocalTime.of(17,0));
+        deliveryDto.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
 
         //Act and assert
         mockMvc.perform(put("/v1/deliveries/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(deliveryDto)))

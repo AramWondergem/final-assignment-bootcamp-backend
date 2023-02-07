@@ -6,7 +6,6 @@ import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.mapper.MenuMapper;
 import nl.wondergem.wondercooks.model.*;
 import nl.wondergem.wondercooks.repository.MenuRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

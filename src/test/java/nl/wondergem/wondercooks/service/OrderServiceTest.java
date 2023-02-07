@@ -8,7 +8,6 @@ import nl.wondergem.wondercooks.mapper.OrderMapper;
 import nl.wondergem.wondercooks.model.*;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

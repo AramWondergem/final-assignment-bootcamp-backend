@@ -64,7 +64,7 @@ public class OrderService {
 
         Order orderToBeUpdated = orderRepository.getReferenceById(id);
 
-        if (orderInputDto.getNumberOfMenus() >= orderToBeUpdated.getNumberOfMenus()) {
+        if ( LocalDateTime.now().isBefore(orderToBeUpdated.getMenu().getOrderDeadline()) || orderInputDto.getNumberOfMenus() >= orderToBeUpdated.getNumberOfMenus()) {
 
             Order updatedOrder = orderMapper.orderInputDtoToOrderUpdate(orderInputDto, orderToBeUpdated);
 
@@ -110,7 +110,15 @@ public class OrderService {
     public void declineOrder(long id) {
         Order order = orderRepository.getReferenceById(id);
         order.setDeclined(true);
-        order.setDelivery(null);
+
+        if(order.getDelivery() != null) {
+
+            Delivery delivery = order.getDelivery();
+            order.setDelivery(null);
+
+            deliveryService.deleteDelivery(delivery.getId());
+
+        }
 
         orderRepository.save(order);
 

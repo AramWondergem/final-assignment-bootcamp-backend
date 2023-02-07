@@ -4,7 +4,6 @@ import nl.wondergem.wondercooks.dto.UserDto;
 import nl.wondergem.wondercooks.dto.inputDto.UserInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.model.CookCustomer;
-import nl.wondergem.wondercooks.model.Role;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.CookCustomerRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
