@@ -44,7 +44,7 @@ insert into menus (cook_id, dessert, end_delivery_window, main, menu_description
                    tikkie_link, title, warm_up_instruction)
 values (3, 'Millionaires shortbread', '2023-02-11 19:00:00', 'Eggplant with a tomato sauce',
         'It tastes heavenly and that without animal products',
-        'http://localhost:8080/v1/files/eggplant-menu-picture.jpg', 'VEGAN', 25, '2023-02-10 17:00:00', 12.5, false,
+        'http://localhost:8080/v1/files/eggplant-menu-picture.jpg', 'VEGAN', 25, '2024-02-10 17:00:00', 12.5, false,
         'Salad with grapefruit and sumac', '2023-02-11 17:00:00', 'Fruits de mer', 'https://www.novi.nl/',
         'Best menu ever', '1. Starter can be served cold.2. Eggplant can you warm up in the oven.');
 insert into customer_menu(menu_id, customer_id)
