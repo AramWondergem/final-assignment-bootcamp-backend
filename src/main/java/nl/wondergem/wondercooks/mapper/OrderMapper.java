@@ -45,14 +45,14 @@ public class OrderMapper {
         orderDto.setCity(order.getCity());
         orderDto.setComments(order.getComments());
         orderDto.setOrderDateAndTime(order.getOrderDateAndTime());
-        if(order.getDelivery()!=null) {
+        if (order.getDelivery() != null) {
             orderDto.setDelivery(deliveryMapper.deliveryToDeliveryDtoReturn(order.getDelivery()));
         }
         orderDto.setDeclined(order.isDeclined());
-    return orderDto;
+        return orderDto;
     }
 
-    public OrderDtoSmall orderToOrderDtoSmall(Order order){
+    public OrderDtoSmall orderToOrderDtoSmall(Order order) {
         OrderDtoSmall orderDtoSmall = new OrderDtoSmall();
         orderDtoSmall.setId(order.getId());
         orderDtoSmall.setNumberOfMenus(order.getNumberOfMenus());
@@ -67,7 +67,7 @@ public class OrderMapper {
         orderDtoSmall.setOrderDateAndTime(order.getOrderDateAndTime());
         orderDtoSmall.setDeclined(order.isDeclined());
         orderDtoSmall.setMenuId(order.getMenu().getId());
-        if(order.getDelivery()!=null) {
+        if (order.getDelivery() != null) {
             orderDtoSmall.setDelivery(deliveryMapper.deliveryToDeliveryDtoReturn(order.getDelivery()));
         }
         orderDtoSmall.setDeclined(order.isDeclined());
@@ -78,7 +78,7 @@ public class OrderMapper {
 
     }
 
-    public Order orderInputDtoToOrder(OrderInputDto orderInputDto, Order order){
+    public Order orderInputDtoToOrder(OrderInputDto orderInputDto, Order order) {
 
         order.setMenu(menuRepository.getReferenceById(orderInputDto.getMenuId()));
         order.setOrderCustomer(userRepository.getReferenceById(orderInputDto.getOrderCustomerId()));
@@ -97,7 +97,7 @@ public class OrderMapper {
 
     }
 
-    public Order orderInputDtoToOrderUpdate(OrderInputDto orderInputDto, Order order){
+    public Order orderInputDtoToOrderUpdate(OrderInputDto orderInputDto, Order order) {
 
         order.setMenu(menuRepository.getReferenceById(orderInputDto.getMenuId()));
         order.setOrderCustomer(userRepository.getReferenceById(orderInputDto.getOrderCustomerId()));

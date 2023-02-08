@@ -4,7 +4,7 @@ import nl.wondergem.wondercooks.dto.OrderDto;
 import nl.wondergem.wondercooks.dto.inputDto.OrderInputDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.OrderService;
-import nl.wondergem.wondercooks.util.Util;
+import nl.wondergem.wondercooks.util.StringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +34,11 @@ public class OrderController {
     public ResponseEntity<Object> createOrder(@Valid @RequestBody OrderInputDto orderInputDto, BindingResult br) throws Exception {
 
         if (br.hasErrors()) {
-            String errorMessage = Util.badRequestMessageGenerator(br);
+            String errorMessage = StringGenerator.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
             OrderDto orderDto = orderService.saveOrder(orderInputDto);
-            URI uri = Util.uriGenerator(env.getProperty("apiPrefix") + "/orders/" + orderDto.getId());
+            URI uri = StringGenerator.uriGenerator(env.getProperty("apiPrefix") + "/orders/" + orderDto.getId());
             return ResponseEntity.created(uri).header("Order-id", String.valueOf(orderDto.getId())).body("order created");
         }
     }
@@ -56,7 +56,7 @@ public class OrderController {
     public ResponseEntity<Object> updateOrder(@PathVariable long id, @Valid @RequestBody OrderInputDto orderInputDto, BindingResult br) {
 
         if (br.hasErrors()) {
-            String errorMessage = Util.badRequestMessageGenerator(br);
+            String errorMessage = StringGenerator.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
             orderService.updateOrder(orderInputDto, id);
@@ -84,8 +84,6 @@ public class OrderController {
         orderService.declineOrder(id);
         return ResponseEntity.ok("order declined");
     }
-
-
 
 
 }

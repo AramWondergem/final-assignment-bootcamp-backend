@@ -7,7 +7,7 @@ import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.model.EmailDetails;
 import nl.wondergem.wondercooks.service.EmailServiceImpl;
 import nl.wondergem.wondercooks.service.UserService;
-import nl.wondergem.wondercooks.util.Util;
+import nl.wondergem.wondercooks.util.StringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -40,25 +40,26 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
 
         if (br.hasErrors()) {
-            String errorMessage = Util.badRequestMessageGenerator(br);
+            String errorMessage = StringGenerator.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
             UserDto userDto = service.saveUser(userInputDto);
-            URI uri = Util.uriGenerator(env.getProperty("apiPrefix")+ "/users/");
+            URI uri = StringGenerator.uriGenerator(env.getProperty("apiPrefix") + "/users/");
             EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "nieuw account", "nieuw account");
             emailService.sendSimpleMail(emailDetails);
             return ResponseEntity.created(uri).body("user created");
         }
     }
+
     // get one user
-    @GetMapping ("")
+    @GetMapping("")
     public ResponseEntity<Object> getUser() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(service.getUser(ud.getUsername()));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllUsers(){
+    public ResponseEntity<Object> getAllUsers() {
         return ResponseEntity.ok(service.getAllUsers());
     }
 
@@ -68,10 +69,10 @@ public class UserController {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (br.hasErrors()) {
-            String errorMessage = Util.badRequestMessageGenerator(br);
+            String errorMessage = StringGenerator.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
-            UserDto userDto = service.updateUser(userUpdateDto,ud.getUsername());
+            UserDto userDto = service.updateUser(userUpdateDto, ud.getUsername());
             return ResponseEntity.ok(userDto);
         }
 

@@ -34,11 +34,11 @@ class FileManagerServiceTest {
 
         fileManagerService = new FileManagerService(basePath.toString());
 
-        if(!Files.exists(basePath) && !Files.isDirectory(basePath)) {
+        if (!Files.exists(basePath) && !Files.isDirectory(basePath)) {
 
             try {
                 Files.createDirectory(basePath);
-            }catch (IOException e) {
+            } catch (IOException e) {
                 throw new IOException("Issue with creating directory for test");
             }
         }

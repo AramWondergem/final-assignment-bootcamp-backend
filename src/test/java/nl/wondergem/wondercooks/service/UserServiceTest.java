@@ -131,7 +131,7 @@ class UserServiceTest {
 
 
     @Test
-   @DisplayName("WhenGetAllUsersIsCalledThenAllUsersAreReturnedInList")
+    @DisplayName("WhenGetAllUsersIsCalledThenAllUsersAreReturnedInList")
     void getAllUsers() {
         //Arrange
         List<User> reposUserList = new ArrayList<>();
@@ -231,18 +231,18 @@ class UserServiceTest {
         updatedUserDto.allergiesExplanation = "I will die";
 
         when(repos.findByEmail(email)).thenReturn(Optional.of(newUser));
-        when(userMapper.userUpdateDtoToUser(userUpdateDto,newUser)).thenReturn(updatedUser);
+        when(userMapper.userUpdateDtoToUser(userUpdateDto, newUser)).thenReturn(updatedUser);
         when(repos.save(updatedUser)).thenReturn(updatedUser);
         when(userMapper.userToUserDto(updatedUser)).thenReturn(updatedUserDto);
 
         //act
 
-        UserDto result = userService.updateUser(userUpdateDto,email);
+        UserDto result = userService.updateUser(userUpdateDto, email);
 
         //assert
 
         verify(repos).findByEmail(email);
-        verify(userMapper).userUpdateDtoToUser(userUpdateDto,newUser);
+        verify(userMapper).userUpdateDtoToUser(userUpdateDto, newUser);
         verify(repos).save(updatedUser);
         verify(userMapper).userToUserDto(updatedUser);
 
@@ -262,14 +262,14 @@ class UserServiceTest {
     @Test
     void testGetUser() {
         //arrange
-        when(repos.getReferenceById((long)1)).thenReturn(newUser);
+        when(repos.getReferenceById((long) 1)).thenReturn(newUser);
 
         //act
         User result = userService.getUser(1);
 
         //assert
-        verify(repos, times(1)).getReferenceById((long)1);
-        assertEquals(newUser.getId(),result.getId());
-        assertEquals(newUser.getUsername(),result.getUsername());
+        verify(repos, times(1)).getReferenceById((long) 1);
+        assertEquals(newUser.getId(), result.getId());
+        assertEquals(newUser.getUsername(), result.getUsername());
     }
 }

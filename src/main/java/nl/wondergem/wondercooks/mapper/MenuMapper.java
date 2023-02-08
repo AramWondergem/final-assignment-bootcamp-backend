@@ -24,7 +24,7 @@ public class MenuMapper {
 
     private final OrderMapper orderMapper;
 
-    public MenuMapper(@Lazy UserMapper userMapper, UserService userService,@Lazy OrderMapper orderMapper) {
+    public MenuMapper(@Lazy UserMapper userMapper, UserService userService, @Lazy OrderMapper orderMapper) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.orderMapper = orderMapper;
@@ -37,9 +37,9 @@ public class MenuMapper {
         menuDto.cook = userMapper.userToUserDtoSmall(menu.getCook());
 
         Set<UserDtoSmall> customers = new HashSet<>();
-        if(menu.getCustomers() != null) {
-            for (User customer:
-                 menu.getCustomers()) {
+        if (menu.getCustomers() != null) {
+            for (User customer :
+                    menu.getCustomers()) {
 
                 UserDtoSmall customerDto = userMapper.userToUserDtoSmall(customer);
 
@@ -51,8 +51,8 @@ public class MenuMapper {
 
         Set<OrderDtoSmall> orders = new HashSet<>();
 
-        if(menu.getOrders() != null) {
-            for(Order order: menu.getOrders()) {
+        if (menu.getOrders() != null) {
+            for (Order order : menu.getOrders()) {
                 OrderDtoSmall orderDtoSmall = orderMapper.orderToOrderDtoSmall(order);
                 orders.add(orderDtoSmall);
             }
@@ -80,7 +80,7 @@ public class MenuMapper {
 
     }
 
-    public MenuDtoSmall menuToMenuDtoSmall(Menu menu){
+    public MenuDtoSmall menuToMenuDtoSmall(Menu menu) {
         MenuDtoSmall menuDtoSmall = new MenuDtoSmall();
 
         menuDtoSmall.id = menu.getId();
@@ -106,13 +106,13 @@ public class MenuMapper {
 
     }
 
-    public Menu menuInputDtoToMenu(MenuInputDto menuInputDto, Menu menu){
+    public Menu menuInputDtoToMenu(MenuInputDto menuInputDto, Menu menu) {
 
 
         menu.setCook(userService.getUser(menuInputDto.cookId));
 
         Set<User> customers = new HashSet<>();
-        if(menuInputDto.customersId != null) {
+        if (menuInputDto.customersId != null) {
             for (int id :
                     menuInputDto.customersId) {
 
@@ -130,7 +130,7 @@ public class MenuMapper {
         menu.setDessert(menuInputDto.dessert);
         menu.setMenuDescription(menuInputDto.menuDescription);
         menu.setMenuPictureURL(menuInputDto.menuPictureURL);
-        if(menuInputDto.menuType != null) {
+        if (menuInputDto.menuType != null) {
             menu.setMenuType(MenuType.valueOf(menuInputDto.menuType));
         }
         menu.setWarmUpInstruction(menuInputDto.warmUpInstruction);
@@ -143,7 +143,6 @@ public class MenuMapper {
         menu.setSendToCustomers(menuInputDto.sendToCustomers);
 
         return menu;
-
 
 
     }

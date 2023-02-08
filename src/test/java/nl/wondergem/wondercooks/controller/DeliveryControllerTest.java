@@ -26,6 +26,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(DeliveryController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -58,7 +59,7 @@ class DeliveryControllerTest {
         DeliveryDto deliveryDto = new DeliveryDto();
 
         deliveryDto.setPaid(false);
-        deliveryDto.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
+        deliveryDto.setETA(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
 
         //Act and assert
         mockMvc.perform(put("/v1/deliveries/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(deliveryDto)))

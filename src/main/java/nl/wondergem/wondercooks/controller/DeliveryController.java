@@ -4,7 +4,7 @@ package nl.wondergem.wondercooks.controller;
 import nl.wondergem.wondercooks.dto.DeliveryDto;
 import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.service.DeliveryService;
-import nl.wondergem.wondercooks.util.Util;
+import nl.wondergem.wondercooks.util.StringGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class DeliveryController {
     public ResponseEntity<Object> updateDelivery(@PathVariable long id, @Valid @RequestBody DeliveryDto deliveryDto, BindingResult br) {
 
         if (br.hasErrors()) {
-            String errorMessage = Util.badRequestMessageGenerator(br);
+            String errorMessage = StringGenerator.badRequestMessageGenerator(br);
             throw new BadRequestException(errorMessage);
         } else {
             deliveryService.updateDelivery(deliveryDto, id);
@@ -38,12 +38,10 @@ public class DeliveryController {
     @PutMapping("/eta/{id}")
     public ResponseEntity<Object> sendETA(@PathVariable long id) {
 
-            deliveryService.sendETA(id);
-            return ResponseEntity.ok("ETA is sent to customer");
+        deliveryService.sendETA(id);
+        return ResponseEntity.ok("ETA is sent to customer");
 
     }
-
-
 
 
 }

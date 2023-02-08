@@ -5,14 +5,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.Serial;
 
-@ResponseStatus(code= HttpStatus.BAD_REQUEST)
-public class IndexOutOfBoundsException extends RuntimeException{
+@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+public class IndexOutOfBoundsException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public IndexOutOfBoundsException(){
+    public IndexOutOfBoundsException() {
         super();
     }
+
     public IndexOutOfBoundsException(String message) {
         super(message);
     }

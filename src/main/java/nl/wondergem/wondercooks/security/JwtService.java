@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 
-
 @Service
 public class JwtService {
     public static Dotenv dotenv = Dotenv.load();
@@ -37,8 +36,8 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
 
 
-            return
-                    Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return
+                Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 
 
     }
@@ -51,6 +50,7 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
+
     private String createToken(Map<String, Object> claims, String
             subject) {
         long validPeriod = 1000 * 60 * 60 * 24 * 24; // 10 days in ms

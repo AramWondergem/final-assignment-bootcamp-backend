@@ -337,8 +337,8 @@ class OrderServiceTest {
 
         //assert
         verify(orderRepository, times(1)).getReferenceById((long) 1);
-        verify(deliveryRepository,times(1)).save(emptyDelivery);
-        verify(orderRepository,times(1)).save(order);
+        verify(deliveryRepository, times(1)).save(emptyDelivery);
+        verify(orderRepository, times(1)).save(order);
 
 
     }
@@ -353,8 +353,8 @@ class OrderServiceTest {
         orderService.declineOrder(1);
 
         //assert
-        verify(orderRepository,times(1)).getReferenceById((long)1);
-        verify(orderRepository,times(1)).save(order);
+        verify(orderRepository, times(1)).getReferenceById((long) 1);
+        verify(orderRepository, times(1)).save(order);
 
     }
 }

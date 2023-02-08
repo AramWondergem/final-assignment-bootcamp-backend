@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     private String username;
@@ -36,11 +36,11 @@ public class User {
     private String allergiesExplanation;
     private String profilePicture;
 
-    @OneToMany(mappedBy = "cook",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cook", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CookCustomer> cookCustomerCookSide;
 
-    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CookCustomer> cookCustomerCustomerSide;
 
@@ -60,7 +60,6 @@ public class User {
     public void addRole(Role role) {
         roles.add(role);
     }
-
 
 
 }

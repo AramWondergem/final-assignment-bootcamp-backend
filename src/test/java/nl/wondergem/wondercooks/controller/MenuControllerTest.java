@@ -122,7 +122,7 @@ class MenuControllerTest {
         //Act and assert
         mockMvc.perform(post("/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location","http://localhost/v1/menus/1"))
+                .andExpect(header().string("Location", "http://localhost/v1/menus/1"))
                 .andExpect(content().string("menu created"));
     }
 

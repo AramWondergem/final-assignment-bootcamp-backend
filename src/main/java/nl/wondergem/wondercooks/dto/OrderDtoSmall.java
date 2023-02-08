@@ -1,4 +1,5 @@
 package nl.wondergem.wondercooks.dto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class OrderDtoSmall {
     private LocalTime startDeliveryWindow;
     private LocalTime endDeliveryWindow;
     private String streetAndNumber;
-    private String zipcode ;
+    private String zipcode;
     private String city;
     private String comments;
     private LocalDateTime orderDateAndTime;

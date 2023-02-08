@@ -167,8 +167,8 @@ public class MenuIntergrationTest {
         orderRepository.save(order2);
 
         menuInputDto = new MenuInputDto();
-        menuInputDto.cookId = (int)cook.getId();
-        menuInputDto.customersId = new int[]{(int)customer1.getId(), (int)customer2.getId()};
+        menuInputDto.cookId = (int) cook.getId();
+        menuInputDto.customersId = new int[]{(int) customer1.getId(), (int) customer2.getId()};
         menuInputDto.title = "Best Title ever";
         menuInputDto.starter = "starter";
         menuInputDto.main = "main";

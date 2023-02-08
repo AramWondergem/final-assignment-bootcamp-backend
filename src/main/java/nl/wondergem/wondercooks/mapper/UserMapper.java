@@ -13,9 +13,9 @@ import java.util.Set;
 
 @Component
 public class UserMapper {
-private final PasswordEncoder passwordEncoder;
-private final MenuMapper menuMapper;
-private final OrderMapper orderMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final MenuMapper menuMapper;
+    private final OrderMapper orderMapper;
 
 
     public UserMapper(PasswordEncoder passwordEncoder, MenuMapper menuMapper, OrderMapper orderMapper) {
@@ -43,7 +43,7 @@ private final OrderMapper orderMapper;
 
         Set<UserDtoSmall> cooks = new HashSet<>();
 
-        if(user.getCookCustomerCustomerSide() != null) {
+        if (user.getCookCustomerCustomerSide() != null) {
 
             for (CookCustomer cookCustomer :
                     user.getCookCustomerCustomerSide()) {
@@ -57,7 +57,7 @@ private final OrderMapper orderMapper;
 
         Set<UserDtoSmall> customers = new HashSet<>();
 
-        if(user.getCookCustomerCookSide() != null) {
+        if (user.getCookCustomerCookSide() != null) {
             for (CookCustomer cookCustomer :
                     user.getCookCustomerCookSide()) {
 
@@ -69,8 +69,8 @@ private final OrderMapper orderMapper;
 
         Set<MenuDto> menusAsCook = new HashSet<>();
 
-        if(user.getMenusAsCook() != null) {
-            for(Menu menu: user.getMenusAsCook()) {
+        if (user.getMenusAsCook() != null) {
+            for (Menu menu : user.getMenusAsCook()) {
                 MenuDto menuDtoSmall = menuMapper.menuToMenuDto(menu);
                 menusAsCook.add(menuDtoSmall);
             }
@@ -78,8 +78,8 @@ private final OrderMapper orderMapper;
 
         Set<MenuDto> menusAsCustomer = new HashSet<>();
 
-        if(user.getMenusAsCustomer() != null) {
-            for(Menu menu: user.getMenusAsCustomer()) {
+        if (user.getMenusAsCustomer() != null) {
+            for (Menu menu : user.getMenusAsCustomer()) {
                 MenuDto menuDto = menuMapper.menuToMenuDto(menu);
                 menusAsCustomer.add(menuDto);
             }
@@ -87,8 +87,8 @@ private final OrderMapper orderMapper;
 
         Set<OrderDtoSmall> orders = new HashSet<>();
 
-        if(user.getOrders() != null) {
-            for(Order order: user.getOrders()) {
+        if (user.getOrders() != null) {
+            for (Order order : user.getOrders()) {
                 OrderDtoSmall orderDto = orderMapper.orderToOrderDtoSmall(order);
                 orders.add(orderDto);
             }
@@ -105,7 +105,7 @@ private final OrderMapper orderMapper;
         return userDto;
     }
 
-    public UserDtoSmall userToUserDtoSmall(User user){
+    public UserDtoSmall userToUserDtoSmall(User user) {
         UserDtoSmall userDtoSmall = new UserDtoSmall();
         userDtoSmall.setEmail(user.getEmail());
         userDtoSmall.setRoles(user.getRoles());
@@ -122,7 +122,7 @@ private final OrderMapper orderMapper;
         return userDtoSmall;
     }
 
-   public User userInputDtoToUser(UserInputDto userInputDto, Set<Role> roles){
+    public User userInputDtoToUser(UserInputDto userInputDto, Set<Role> roles) {
 
         User user = new User();
 

@@ -9,7 +9,6 @@ import nl.wondergem.wondercooks.repository.DeliveryRepository;
 import org.springframework.stereotype.Service;
 
 
-
 @Service
 public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
@@ -24,7 +23,7 @@ public class DeliveryService {
     }
 
 
-    public DeliveryDto saveDelivery(DeliveryDto deliveryDto)  {
+    public DeliveryDto saveDelivery(DeliveryDto deliveryDto) {
 
 
         Delivery emptyDelivery = new Delivery();
@@ -61,7 +60,7 @@ public class DeliveryService {
 
     }
 
-    public void sendETA(long id){
+    public void sendETA(long id) {
         Delivery delivery = deliveryRepository.getReferenceById(id);
 
         User customer = delivery.getOrder().getOrderCustomer();

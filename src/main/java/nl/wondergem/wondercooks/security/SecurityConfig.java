@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -47,8 +47,7 @@ public class SecurityConfig  {
     }
 
 
-
-    @Bean //todo aanpassen
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
@@ -57,6 +56,7 @@ public class SecurityConfig  {
                 // without token
                 .antMatchers(HttpMethod.POST, "/v1/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
+//                .antMatchers(HttpMethod.GET,"/v1/files/**").permitAll()
                 // with token and role user
                 .antMatchers("/v1/files/**").hasAuthority("USER")
                 .antMatchers("/v1/users").hasAuthority("USER")
@@ -71,7 +71,7 @@ public class SecurityConfig  {
                 .antMatchers("/v1/deliveries/**").hasAuthority("COOK")
                 .antMatchers(HttpMethod.POST, "/v1/cookcustomer/cook").hasAuthority("COOK")
                 // with token and role admin
-                .antMatchers(HttpMethod.GET,"/v1/users/all").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/v1/users/all").hasAuthority("ADMIN")
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()

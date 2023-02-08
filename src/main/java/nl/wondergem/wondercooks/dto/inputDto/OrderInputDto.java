@@ -1,4 +1,5 @@
 package nl.wondergem.wondercooks.dto.inputDto;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +30,7 @@ public class OrderInputDto {
     @NotNull
     private String streetAndNumber;
     @NotNull
-    private String zipcode ;
+    private String zipcode;
     @NotNull
     private String city;
     private String comments;

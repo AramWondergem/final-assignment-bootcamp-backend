@@ -28,7 +28,7 @@ public class UserService {
     private final OrderService orderService;
 
 
-    public UserService(UserRepository userRepository, @Lazy UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService, @Lazy CookCustomerService cookCustomerService, @Lazy MenuService menuService, @Lazy OrderService orderService){
+    public UserService(UserRepository userRepository, @Lazy UserMapper userMapper, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authManager, AuthService authService, @Lazy CookCustomerService cookCustomerService, @Lazy MenuService menuService, @Lazy OrderService orderService) {
         this.repos = userRepository;
         this.userMapper = userMapper;
 
@@ -39,32 +39,31 @@ public class UserService {
 
     public UserDto saveUser(UserInputDto userInputDto) {
 
-        if(!repos.existsByEmail(userInputDto.email)) {
+        if (!repos.existsByEmail(userInputDto.email)) {
 
             Set<Role> roles = new HashSet<>();
             roles.add(Role.USER);
 
-            User newUser = userMapper.userInputDtoToUser(userInputDto,roles);
+            User newUser = userMapper.userInputDtoToUser(userInputDto, roles);
 
             return userMapper.userToUserDto(repos.save(newUser));
-        }
-        else {
+        } else {
             throw new BadRequestException("Username already used");
         }
 
     }
 
-    public User getUser(long id){
+    public User getUser(long id) {
         return repos.getReferenceById(id);
     }
 
-    public UserDto getUser(String email){
+    public UserDto getUser(String email) {
 
         User user = repos.findByEmail(email).get();
         return userMapper.userToUserDto(user);
     }
 
-    public Iterable<UserDto> getAllUsers(){
+    public Iterable<UserDto> getAllUsers() {
         List<User> reposUserList = repos.findAll();
         List<UserDto> userDtos = new ArrayList<>();
 
@@ -80,7 +79,7 @@ public class UserService {
     public UserDto updateUser(UserUpdateDto userUpdateDto, String email) {
 
         User user = repos.findByEmail(email).get();
-        User updatedUser = userMapper.userUpdateDtoToUser(userUpdateDto,user);
+        User updatedUser = userMapper.userUpdateDtoToUser(userUpdateDto, user);
         updatedUser = repos.save(updatedUser);
 
         return userMapper.userToUserDto(updatedUser);
@@ -88,12 +87,12 @@ public class UserService {
     }
 
 
-    public UserDto updateRoleWithCook(String email ){
+    public UserDto updateRoleWithCook(String email) {
 
 
         Optional<User> userOptional = repos.findByEmail(email);
 
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
 
             User user = userOptional.get();
 
@@ -110,11 +109,11 @@ public class UserService {
     }
 
 
-    public void deleteUser(String email){
+    public void deleteUser(String email) {
 
         User user = repos.findByEmail(email).get();
 
-        if(user.getCookCustomerCookSide().size()>0){
+        if (user.getCookCustomerCookSide().size() > 0) {
 
             for (CookCustomer relation :
                     user.getCookCustomerCookSide()) {
@@ -125,7 +124,7 @@ public class UserService {
 
         }
 
-        if(user.getCookCustomerCustomerSide().size()>0){
+        if (user.getCookCustomerCustomerSide().size() > 0) {
 
             for (CookCustomer relation :
                     user.getCookCustomerCustomerSide()) {
@@ -136,7 +135,7 @@ public class UserService {
 
         }
 
-        if(user.getMenusAsCook().size()>0){
+        if (user.getMenusAsCook().size() > 0) {
 
             for (Menu menu :
                     user.getMenusAsCook()) {
@@ -147,21 +146,20 @@ public class UserService {
 
         }
 
-        if(user.getMenusAsCustomer().size()>0) {
+        if (user.getMenusAsCustomer().size() > 0) {
 
-            for(Menu menu: user.getMenusAsCustomer()) {
-                menuService.removeCustomer(user,menu.getId());
+            for (Menu menu : user.getMenusAsCustomer()) {
+                menuService.removeCustomer(user, menu.getId());
             }
         }
 
-        if(user.getOrders().size()>0){
-            for(Order order: user.getOrders()) {
+        if (user.getOrders().size() > 0) {
+            for (Order order : user.getOrders()) {
                 orderService.deleteOrder(order.getId());
             }
         }
 
 
-
-       repos.deleteById(user.getId());
+        repos.deleteById(user.getId());
     }
 }

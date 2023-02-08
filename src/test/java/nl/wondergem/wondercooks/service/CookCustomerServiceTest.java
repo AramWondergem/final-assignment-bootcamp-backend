@@ -107,7 +107,7 @@ class CookCustomerServiceTest {
 
         //act
 
-        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails,userInputDto);
+        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails, userInputDto);
 
         //assert
 
@@ -128,7 +128,7 @@ class CookCustomerServiceTest {
 
         //act
 
-        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails,userInputDto);
+        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails, userInputDto);
 
         //assert
 
@@ -141,7 +141,7 @@ class CookCustomerServiceTest {
 
     @Test
     @DisplayName("WhenCustomerWantToBeCustomerOfCookThenTheMethodsAreCalledInTheFunction")
-    void createRelationCustomer(){
+    void createRelationCustomer() {
         //Arrange
         long id = 2;
         MyUserDetails myUserDetails1 = new MyUserDetails(customer);

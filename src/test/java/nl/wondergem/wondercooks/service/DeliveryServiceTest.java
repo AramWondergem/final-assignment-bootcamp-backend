@@ -45,22 +45,20 @@ class DeliveryServiceTest {
     private User user;
 
 
-
-
     @BeforeEach
     void setUp() {
         deliveryDto = new DeliveryDto();
-        deliveryDto.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
+        deliveryDto.setETA(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
         deliveryDto.setPaid(false);
 
         deliveryDtoReturn = new DeliveryDto();
-        deliveryDtoReturn.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
+        deliveryDtoReturn.setETA(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
         deliveryDtoReturn.setPaid(false);
         deliveryDtoReturn.setId(1);
 
         delivery = new Delivery();
         delivery.setPaid(false);
-        delivery.setETA(LocalDateTime.of(2022, 10,23,19,0,0));
+        delivery.setETA(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
         delivery.setId(1);
 
         user = new User();
@@ -97,24 +95,24 @@ class DeliveryServiceTest {
         //assert
         verify(deliveryMapper, times(1)).deliveryDtoToDelivery(deliveryDto, emptyDelivery);
         verify(deliveryRepository, times(1)).save(delivery);
-        verify(deliveryMapper,times(1)).deliveryToDeliveryDto(delivery);
-        assertEquals(deliveryDtoReturn.getId(),result.getId());
-        assertEquals(deliveryDtoReturn.getETA(),result.getETA());
-        assertEquals(deliveryDtoReturn.isPaid(),result.isPaid());
+        verify(deliveryMapper, times(1)).deliveryToDeliveryDto(delivery);
+        assertEquals(deliveryDtoReturn.getId(), result.getId());
+        assertEquals(deliveryDtoReturn.getETA(), result.getETA());
+        assertEquals(deliveryDtoReturn.isPaid(), result.isPaid());
 
     }
 
     @Test
     void getDelivery() {
         //arrange
-        when(deliveryRepository.getReferenceById((long)1)).thenReturn(delivery);
+        when(deliveryRepository.getReferenceById((long) 1)).thenReturn(delivery);
         when(deliveryMapper.deliveryToDeliveryDto(delivery)).thenReturn(deliveryDtoReturn);
         //act
         DeliveryDto result = deliveryService.getDelivery(1);
 
         //assert
-        verify(deliveryRepository, times(1)).getReferenceById((long)1);
-        verify(deliveryMapper,times(1)).deliveryToDeliveryDto(delivery);
+        verify(deliveryRepository, times(1)).getReferenceById((long) 1);
+        verify(deliveryMapper, times(1)).deliveryToDeliveryDto(delivery);
 
     }
 
@@ -127,16 +125,16 @@ class DeliveryServiceTest {
 
         deliveryDto.setPaid(true);
 
-        when(deliveryRepository.getReferenceById((long)1)).thenReturn(delivery);
+        when(deliveryRepository.getReferenceById((long) 1)).thenReturn(delivery);
         when(deliveryMapper.deliveryDtoToDelivery(deliveryDto, delivery)).thenReturn(updatedDelivery);
         //act
 
         deliveryService.updateDelivery(deliveryDto, 1);
 
         //assert
-        verify(deliveryRepository, times(1)).getReferenceById((long)1 );
+        verify(deliveryRepository, times(1)).getReferenceById((long) 1);
         verify(deliveryMapper, times(1)).deliveryDtoToDelivery(deliveryDto, delivery);
-        verify(deliveryRepository,times(1)).save(updatedDelivery);
+        verify(deliveryRepository, times(1)).save(updatedDelivery);
     }
 
     @Test
@@ -144,7 +142,7 @@ class DeliveryServiceTest {
         //act
         deliveryService.deleteDelivery(1);
         //assert
-        verify(deliveryRepository).deleteById((long)1);
+        verify(deliveryRepository).deleteById((long) 1);
 
     }
 
@@ -153,7 +151,7 @@ class DeliveryServiceTest {
         //arrange
         delivery.setOrder(order);
 
-        when(deliveryRepository.getReferenceById((long)1)).thenReturn(delivery);
+        when(deliveryRepository.getReferenceById((long) 1)).thenReturn(delivery);
 
         EmailDetails emailDetails = new EmailDetails("wonderreclame@gmail.com", "Dear " + delivery.getOrder().getOrderCustomer().getUsername() + "\nThe ETA and warm up instructions are in your account", "ETA and warm up instruction");
 
@@ -161,8 +159,8 @@ class DeliveryServiceTest {
         deliveryService.sendETA(1);
 
         //assert
-        verify(deliveryRepository, times(1)).getReferenceById((long)1 );
-        verify(emailService,times(1)).sendSimpleMail(emailDetails);
+        verify(deliveryRepository, times(1)).getReferenceById((long) 1);
+        verify(emailService, times(1)).sendSimpleMail(emailDetails);
 
     }
 }

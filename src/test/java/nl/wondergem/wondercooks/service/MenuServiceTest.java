@@ -55,7 +55,6 @@ class MenuServiceTest {
     Set<Order> orders = new HashSet<>();
 
 
-
     @BeforeEach
     void setUp() {
 
@@ -210,7 +209,7 @@ class MenuServiceTest {
         menuDto.tikkieLink = "www.tikkie.nl";
         menuDto.sendToCustomers = false;
 
-        }
+    }
 
     @Test
     void saveMenu() {
@@ -273,8 +272,8 @@ class MenuServiceTest {
 
         //Assert
         verify(menuRepository, times(1)).getReferenceById((long) 1);
-        verify(orderService,times(3)).deleteOrder(anyLong());
-        verify(menuRepository).deleteById((long)1);
+        verify(orderService, times(3)).deleteOrder(anyLong());
+        verify(menuRepository).deleteById((long) 1);
 
     }
 
@@ -284,14 +283,13 @@ class MenuServiceTest {
         when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
 
 
-
         //Act
         menuService.sendMenu(1);
 
         //Assert
         verify(menuRepository, times(1)).getReferenceById((long) 1);
         verify(emailService, times(2)).sendSimpleMail(any(EmailDetails.class));
-        verify(menuRepository,times(1)).save(any(Menu.class));
+        verify(menuRepository, times(1)).save(any(Menu.class));
 
     }
 

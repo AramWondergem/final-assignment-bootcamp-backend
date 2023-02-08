@@ -50,10 +50,7 @@ class OrderControllerTest {
 
     private MenuDtoSmall menuDtoSmall;
 
-    private UserDtoSmall  userDtoSmall1;
-
-
-
+    private UserDtoSmall userDtoSmall1;
 
 
     @BeforeEach
@@ -137,7 +134,7 @@ class OrderControllerTest {
         //Act and assert
         mockMvc.perform(post("/v1/orders").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location","http://localhost/v1/orders/1"))
+                .andExpect(header().string("Location", "http://localhost/v1/orders/1"))
                 .andExpect(content().string("order created"));
 
     }
@@ -177,6 +174,7 @@ class OrderControllerTest {
         mockMvc.perform(put("/v1/orders/accept/1")).andExpect(status().isOk())
                 .andExpect(content().string("order accepted"));
     }
+
     @Test
     void declineOrder() throws Exception {
         //Act and assert
