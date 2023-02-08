@@ -11,11 +11,9 @@ import nl.wondergem.wondercooks.repository.MenuRepository;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
 import nl.wondergem.wondercooks.service.MenuService;
-import nl.wondergem.wondercooks.service.UserService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +26,7 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -66,39 +65,28 @@ public class MenuIntergrationTest {
 
     private MenuInputDto menuInputDto;
 
-
-
+    private Menu menuResult;
 
 
     @BeforeEach
-    void setup(){
+    void setup() {
 
-        if(cookCustomerRepository.count()>0){
+        if (cookCustomerRepository.count() > 0) {
             cookCustomerRepository.deleteAll();
         }
 
-        if(orderRepository.count()>0){
+        if (orderRepository.count() > 0) {
             orderRepository.deleteAll();
         }
 
-        if(menuRepository.count()>0){
+        if (menuRepository.count() > 0) {
             menuRepository.deleteAll();
         }
 
 
-
-
-        if(userRepository.count()>0) {
+        if (userRepository.count() > 0) {
             userRepository.deleteAll();
         }
-
-
-
-
-
-
-
-
 
 
         Set<Role> rolesCook = new HashSet<>();
@@ -163,24 +151,24 @@ public class MenuIntergrationTest {
         menu.setTitle("Best menu ever");
         menu.setMain("main");
         menu.setMenuType(MenuType.VEGAN);
-        menu.setOrderDeadline(LocalDateTime.of(2024, 10,21,17,0,0));
-        menu.setStartDeliveryWindow(LocalDateTime.of(2022, 10,23,17,0,0));
-        menu.setEndDeliveryWindow(LocalDateTime.of(2022, 10,23,19,0,0));
+        menu.setOrderDeadline(LocalDateTime.of(2024, 10, 21, 17, 0, 0));
+        menu.setStartDeliveryWindow(LocalDateTime.of(2022, 10, 23, 17, 0, 0));
+        menu.setEndDeliveryWindow(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
         menu.setNumberOfMenus(4);
         menu.setPriceMenu(12.50f);
         menu.setSendToCustomers(true);
 
-        menuRepository.save(menu);
+        menuResult = menuRepository.save(menu);
 
-        order1.setMenu(menuRepository.getReferenceById((long)1));
-        order2.setMenu(menuRepository.getReferenceById((long)1));
+        order1.setMenu(menuResult);
+        order2.setMenu(menuResult);
 
         orderRepository.save(order1);
         orderRepository.save(order2);
 
         menuInputDto = new MenuInputDto();
-        menuInputDto.cookId = 1;
-        menuInputDto.customersId = new int[]{2, 3};
+        menuInputDto.cookId = (int)cook.getId();
+        menuInputDto.customersId = new int[]{(int)customer1.getId(), (int)customer2.getId()};
         menuInputDto.title = "Best Title ever";
         menuInputDto.starter = "starter";
         menuInputDto.main = "main";
@@ -194,11 +182,9 @@ public class MenuIntergrationTest {
         menuInputDto.priceMenu = 12.50f;
         menuInputDto.tikkieLink = "www.tikkie.nl";
         menuInputDto.sendToCustomers = false;
-        menuInputDto.orderDeadline = LocalDateTime.of(2022, 10,21,17,0,0);
-        menuInputDto.startDeliveryWindow = LocalDateTime.of(2022, 10,23,17,0,0);
-        menuInputDto.endDeliveryWindow = LocalDateTime.of(2022, 10,23,19,0,0);
-
-
+        menuInputDto.orderDeadline = LocalDateTime.of(2022, 10, 21, 17, 0, 0);
+        menuInputDto.startDeliveryWindow = LocalDateTime.of(2022, 10, 23, 17, 0, 0);
+        menuInputDto.endDeliveryWindow = LocalDateTime.of(2022, 10, 23, 19, 0, 0);
     }
 
     @Test
@@ -208,21 +194,20 @@ public class MenuIntergrationTest {
 // act and assert
         mockMvc.perform(post("/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location","http://localhost/v1/menus/2"))
+                .andExpect(header().string("Location", matchesPattern("^http://localhost/v1/menus/\\d+")))
                 .andExpect(content().string("menu created"));
     }
 
     @Test
-    void getMenu() throws Exception{
-
+    void getMenu() throws Exception {
 
 
 // act and assert
-        mockMvc.perform(get("/v1/menus/1"))
+        mockMvc.perform(get("/v1/menus/" + menuResult.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(1))
+                .andExpect(jsonPath("id").value(menuResult.getId()))
                 .andExpect(jsonPath("customers.length()").value(2))
-                .andExpect(jsonPath("cook.id").value(1))
+                .andExpect(jsonPath("cook.id").value(cook.getId()))
                 .andExpect(jsonPath("sendToCustomers").value(true))
                 .andExpect(jsonPath("menuType").value("VEGAN"))
                 .andExpect(jsonPath("title").value("Best menu ever"))
@@ -231,8 +216,7 @@ public class MenuIntergrationTest {
                 .andExpect(jsonPath("numberOfMenus").value(4))
                 .andExpect(jsonPath("priceMenu").value(12.5))
                 .andExpect(jsonPath("orders.length()").value(2))
-                .andExpect(jsonPath("orderDeadline").value("2022-10-21T17:00:00"));
-
+                .andExpect(jsonPath("orderDeadline").value("2024-10-21T17:00:00"));
 
 
     }
@@ -241,15 +225,15 @@ public class MenuIntergrationTest {
     void updateMenu() throws Exception {
 
         //Act and assert
-        mockMvc.perform(put("/v1/menus/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
+        mockMvc.perform(put("/v1/menus/" + menuResult.getId()).contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("menu updated"));
 
-        mockMvc.perform(get("/v1/menus/1"))
+        mockMvc.perform(get("/v1/menus/" + menuResult.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(1))
+                .andExpect(jsonPath("id").value(menuResult.getId()))
                 .andExpect(jsonPath("customers.length()").value(2))
-                .andExpect(jsonPath("cook.id").value(1))
+                .andExpect(jsonPath("cook.id").value(cook.getId()))
                 .andExpect(jsonPath("sendToCustomers").value(false))
                 .andExpect(jsonPath("menuType").value("MEAT"))
                 .andExpect(jsonPath("title").value("Best Title ever"))
@@ -264,7 +248,7 @@ public class MenuIntergrationTest {
     @Test
     void deleteMenu() throws Exception {
         //Act and assert
-        mockMvc.perform(delete("/v1/menus/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/v1/menus/" + menuResult.getId())).andExpect(status().isNoContent());
     }
 
     public static String asJsonString(final Object obj) {
