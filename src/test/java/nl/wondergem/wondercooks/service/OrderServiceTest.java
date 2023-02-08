@@ -6,6 +6,7 @@ import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.mapper.DeliveryMapper;
 import nl.wondergem.wondercooks.mapper.OrderMapper;
 import nl.wondergem.wondercooks.model.*;
+import nl.wondergem.wondercooks.repository.DeliveryRepository;
 import nl.wondergem.wondercooks.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class OrderServiceTest {
     private OrderMapper orderMapper;
 
     @Mock
-    private DeliveryService deliveryService;
+    private DeliveryRepository deliveryRepository;
 
     @Mock
     private DeliveryMapper deliveryMapper;
@@ -278,8 +279,7 @@ class OrderServiceTest {
     void deleteOrder() {
         //arrange
 
-        LocalDateTime localDateTimewithOneDayExtra = LocalDateTime.now().plusDays(1);
-        menuDtoSmall.orderDeadline = localDateTimewithOneDayExtra;
+        menuDtoSmall.orderDeadline = LocalDateTime.now().plusDays(1);
 
         when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
         when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
@@ -305,26 +305,39 @@ class OrderServiceTest {
     @Test
     void acceptOrder() {
         //arrange
-        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
-        DeliveryDto deliveryDto = new DeliveryDto();
-        DeliveryDto saveResult = new DeliveryDto();
-        saveResult.setId(1);
+
         Delivery emptyDelivery = new Delivery();
-        Delivery delivery = new Delivery();
-        delivery.setId(1);
 
-        order.setDelivery(delivery);
+        Delivery result = new Delivery();
+        result.setId(1);
 
-        when(deliveryService.saveDelivery(deliveryDto)).thenReturn(saveResult);
-        when(deliveryMapper.deliveryDtoToDelivery(saveResult,emptyDelivery)).thenReturn(delivery);
+        Order savedOrder = new Order();
+        savedOrder.setId(1);
+        savedOrder.setMenu(menu);
+        savedOrder.setOrderCustomer(user1);
+        savedOrder.setNumberOfMenus(2);
+        savedOrder.setAllergies("pinda");
+        savedOrder.setAllergiesExplanation("I will die");
+        savedOrder.setStartDeliveryWindow(LocalTime.of(17, 0));
+        savedOrder.setEndDeliveryWindow(LocalTime.of(18, 0));
+        savedOrder.setStreetAndNumber("dorpsstraat 1");
+        savedOrder.setZipcode("1412ZZ");
+        savedOrder.setCity("City");
+        savedOrder.setComments("hallo");
+        savedOrder.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
+        savedOrder.setDelivery(result);
+        savedOrder.setDeclined(false);
+
+        when(orderRepository.getReferenceById((long) 1)).thenReturn(order);
+        when(deliveryRepository.save(emptyDelivery)).thenReturn(result);
+
         //act
 
         orderService.acceptOrder(1);
 
         //assert
         verify(orderRepository, times(1)).getReferenceById((long) 1);
-        verify(deliveryService,times(1)).saveDelivery(deliveryDto);
-        verify(deliveryMapper,times(1)).deliveryDtoToDelivery(saveResult,emptyDelivery);
+        verify(deliveryRepository,times(1)).save(emptyDelivery);
         verify(orderRepository,times(1)).save(order);
 
 

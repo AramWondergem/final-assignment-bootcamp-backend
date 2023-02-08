@@ -30,7 +30,6 @@ public class OrderController {
 
 
     //Post
-    // check if before orderDeadline of Menu
     @PostMapping("")
     public ResponseEntity<Object> createOrder(@Valid @RequestBody OrderInputDto orderInputDto, BindingResult br) throws Exception {
 

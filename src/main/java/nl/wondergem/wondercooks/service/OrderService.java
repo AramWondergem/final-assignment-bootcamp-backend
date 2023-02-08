@@ -97,10 +97,10 @@ public class OrderService {
         //if there is already delivery, the order is already accepted
         if (order.getDelivery() == null) {
             Delivery emptyDelivery = new Delivery();
-            deliveryRepository.save(emptyDelivery);
+            Delivery result = deliveryRepository.save(emptyDelivery);
 
 
-            order.setDelivery(emptyDelivery);
+            order.setDelivery(result);
             order.setDeclined(false);
             orderRepository.save(order);
         }

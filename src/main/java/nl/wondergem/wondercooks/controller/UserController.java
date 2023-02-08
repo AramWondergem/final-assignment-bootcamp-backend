@@ -61,26 +61,7 @@ public class UserController {
     public ResponseEntity<Object> getAllUsers(){
         return ResponseEntity.ok(service.getAllUsers());
     }
-    //todo misschien weghalen
-//    @PutMapping("/{username}")
-//    public ResponseEntity<Object> updateUser(@PathVariable String username, @Valid UserInputDto userInputDto, BindingResult br) {
-//        if (br.hasErrors()) {
-//            String erroMessage = Util.badRequestMessageGenerator(br);
-//            throw new BadRequestException(erroMessage);
-//        } else {
-//            service.updateUser(username, userInputDto);
-//            return ResponseEntity.noContent().build();
-//        }
-//    }
 
-//    @PutMapping("")
-//    public ResponseEntity<Object> updatePassword(@Valid @RequestBody PasswordRequest passwordRequest) {
-//
-//        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        service.updatePassword(ud,passwordRequest);
-//        return ResponseEntity.ok().body("password updated");
-//
-//    }
 
     @PutMapping("")
     public ResponseEntity<Object> updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto, BindingResult br) {

@@ -86,38 +86,7 @@ public class UserService {
         return userMapper.userToUserDto(updatedUser);
 
     }
-//todo mischien weghalen
-//    public User updateUser(String username, UserInputDto userInputDto){
-//
-//        if(repos.existsById(username) && username.equals(userInputDto.getUsername())) {
-//
-//            User userToBeUpdated = repos.getReferenceById(username);
-//
-//
-//
-//                    userMapper.userInputDtoToUser(userInputDto);
-//
-//            return repos.save(newUser).getUsername();
-//            return repos.getReferenceById(saveUser(userInputDto));
-//        } else {
-//            throw new UsernameNotFoundException("Username does not exist");
-//        }
-//
-//    }
 
-//    public void updatePassword(long id ,PasswordRequest passwordRequest) {
-//
-//
-//        Authentication auth = authService.authenticationChecker(ud.getUsername(),passwordRequest.oldPassword);
-//
-//        UserDetails uds = (UserDetails) auth.getPrincipal();
-//
-//        User user = repos.getReferenceById(id);
-//
-//        user.setPassword(passwordEncoder.encode(passwordRequest.newPassword));
-//
-//        repos.save(user);
-//    }
 
     public UserDto updateRoleWithCook(String email ){
 
@@ -138,11 +107,8 @@ public class UserService {
             throw new UsernameNotFoundException(email);
         }
 
-
-
     }
 
-    // todo add changeRoles
 
     public void deleteUser(String email){
 

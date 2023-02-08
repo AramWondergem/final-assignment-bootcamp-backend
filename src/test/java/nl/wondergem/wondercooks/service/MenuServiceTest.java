@@ -26,13 +26,16 @@ import static org.mockito.Mockito.*;
 class MenuServiceTest {
 
     @Mock
-    MenuRepository menuRepository;
+    private MenuRepository menuRepository;
     @Mock
-    MenuMapper menuMapper;
+    private MenuMapper menuMapper;
     @Mock
-    EmailServiceImpl emailService;
+    private EmailServiceImpl emailService;
+
+    @Mock
+    private OrderService orderService;
     @InjectMocks
-    MenuService menuService;
+    private MenuService menuService;
 
     private MenuInputDto menuInputDto;
     private Menu menu;
@@ -261,12 +264,17 @@ class MenuServiceTest {
 
     @Test
     void deleteMenu() {
+        //Arrange
+        menu.setOrders(orders);
+        when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
+
         //Act
         menuService.deleteMenu(1);
 
         //Assert
+        verify(menuRepository, times(1)).getReferenceById((long) 1);
+        verify(orderService,times(3)).deleteOrder(anyLong());
         verify(menuRepository).deleteById((long)1);
-
 
     }
 
@@ -276,13 +284,15 @@ class MenuServiceTest {
         when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
 
 
+
         //Act
         menuService.sendMenu(1);
 
         //Assert
         verify(menuRepository, times(1)).getReferenceById((long) 1);
         verify(emailService, times(2)).sendSimpleMail(any(EmailDetails.class));
-        verify(menuRepository).save(any(Menu.class));
+        verify(menuRepository,times(1)).save(any(Menu.class));
+
     }
 
     @Test

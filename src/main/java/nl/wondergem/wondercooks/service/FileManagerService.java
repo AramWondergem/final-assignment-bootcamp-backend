@@ -51,7 +51,7 @@ public class FileManagerService {
         Path filePath = Paths.get(fileStoragePath + File.separator + fileNameAddition +  fileName);
 
         try{
-            Files.copy(file.getInputStream(),filePath,StandardCopyOption.REPLACE_EXISTING); // todo maybe add StandardCopyOption.Replace existing
+            Files.copy(file.getInputStream(),filePath,StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
 
             if( e instanceof FileAlreadyExistsException) {
