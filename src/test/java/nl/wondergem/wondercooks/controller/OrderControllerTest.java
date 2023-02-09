@@ -132,9 +132,9 @@ class OrderControllerTest {
 
 
         //Act and assert
-        mockMvc.perform(post("/v1/orders").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderInputDto)))
+        mockMvc.perform(post("/api/v1/orders").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/v1/orders/1"))
+                .andExpect(header().string("Location", "http://localhost/api/v1/orders/1"))
                 .andExpect(content().string("order created"));
 
     }
@@ -146,7 +146,7 @@ class OrderControllerTest {
         given(orderService.getOrder(1)).willReturn(orderDto);
 
         //act and assert
-        mockMvc.perform(get("/v1/orders/1"))
+        mockMvc.perform(get("/api/v1/orders/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1))
                 .andExpect(jsonPath("menu.id").value(1))
@@ -157,7 +157,7 @@ class OrderControllerTest {
     @Test
     void updateOrder() throws Exception {
         //Act and assert
-        mockMvc.perform(put("/v1/orders/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderInputDto)))
+        mockMvc.perform(put("/api/v1/orders/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderInputDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("order updated"));
     }
@@ -165,20 +165,20 @@ class OrderControllerTest {
     @Test
     void deleteOrder() throws Exception {
         //Act and assert
-        mockMvc.perform(delete("/v1/orders/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/v1/orders/1")).andExpect(status().isNoContent());
     }
 
     @Test
     void acceptOrder() throws Exception {
         //Act and assert
-        mockMvc.perform(put("/v1/orders/accept/1")).andExpect(status().isOk())
+        mockMvc.perform(put("/api/v1/orders/accept/1")).andExpect(status().isOk())
                 .andExpect(content().string("order accepted"));
     }
 
     @Test
     void declineOrder() throws Exception {
         //Act and assert
-        mockMvc.perform(put("/v1/orders/decline/1")).andExpect(status().isOk())
+        mockMvc.perform(put("/api/v1/orders/decline/1")).andExpect(status().isOk())
                 .andExpect(content().string("order declined"));
     }
 }

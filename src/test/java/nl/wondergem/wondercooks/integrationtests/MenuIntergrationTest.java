@@ -15,6 +15,7 @@ import nl.wondergem.wondercooks.service.MenuService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -187,14 +188,16 @@ public class MenuIntergrationTest {
         menuInputDto.endDeliveryWindow = LocalDateTime.of(2022, 10, 23, 19, 0, 0);
     }
 
+
+
     @Test
     void createMenu() throws Exception {
         // arrange
 
 // act and assert
-        mockMvc.perform(post("/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
+        mockMvc.perform(post("/api/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", matchesPattern("^http://localhost/v1/menus/\\d+")))
+                .andExpect(header().string("Location", matchesPattern("^http://localhost/api/v1/menus/\\d+")))
                 .andExpect(content().string("menu created"));
     }
 
@@ -203,7 +206,7 @@ public class MenuIntergrationTest {
 
 
 // act and assert
-        mockMvc.perform(get("/v1/menus/" + menuResult.getId()))
+        mockMvc.perform(get("/api/v1/menus/" + menuResult.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(menuResult.getId()))
                 .andExpect(jsonPath("customers.length()").value(2))
@@ -225,11 +228,11 @@ public class MenuIntergrationTest {
     void updateMenu() throws Exception {
 
         //Act and assert
-        mockMvc.perform(put("/v1/menus/" + menuResult.getId()).contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
+        mockMvc.perform(put("/api/v1/menus/" + menuResult.getId()).contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("menu updated"));
 
-        mockMvc.perform(get("/v1/menus/" + menuResult.getId()))
+        mockMvc.perform(get("/api/v1/menus/" + menuResult.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(menuResult.getId()))
                 .andExpect(jsonPath("customers.length()").value(2))
@@ -248,7 +251,7 @@ public class MenuIntergrationTest {
     @Test
     void deleteMenu() throws Exception {
         //Act and assert
-        mockMvc.perform(delete("/v1/menus/" + menuResult.getId())).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/v1/menus/" + menuResult.getId())).andExpect(status().isNoContent());
     }
 
     public static String asJsonString(final Object obj) {

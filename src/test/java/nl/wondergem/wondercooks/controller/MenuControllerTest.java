@@ -8,6 +8,7 @@ import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.model.MenuType;
 import nl.wondergem.wondercooks.security.JwtService;
 import nl.wondergem.wondercooks.service.MenuService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,6 +107,8 @@ class MenuControllerTest {
         menuDto.sendToCustomers = false;
     }
 
+
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -120,9 +123,9 @@ class MenuControllerTest {
         given(menuService.saveMenu(menuInputDto)).willReturn(menuDto);
 
         //Act and assert
-        mockMvc.perform(post("/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
+        mockMvc.perform(post("/api/v1/menus").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/v1/menus/1"))
+                .andExpect(header().string("Location", "http://localhost/api/v1/menus/1"))
                 .andExpect(content().string("menu created"));
     }
 
@@ -133,7 +136,7 @@ class MenuControllerTest {
         given(menuService.getMenu(1)).willReturn(menuDto);
 
         //act and assert
-        mockMvc.perform(get("/v1/menus/1"))
+        mockMvc.perform(get("/api/v1/menus/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1))
                 .andExpect(jsonPath("customers.length()").value(2))
@@ -144,7 +147,7 @@ class MenuControllerTest {
     @Test
     void updateMenu() throws Exception {
         //Act and assert
-        mockMvc.perform(put("/v1/menus/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
+        mockMvc.perform(put("/api/v1/menus/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(menuInputDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("menu updated"));
     }
@@ -152,30 +155,30 @@ class MenuControllerTest {
     @Test
     void deleteMenu() throws Exception {
         //Act and assert
-        mockMvc.perform(delete("/v1/menus/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/v1/menus/1")).andExpect(status().isNoContent());
     }
 
     @Test
     void sendMenu() throws Exception {
         //Act and Assert
-        mockMvc.perform(put("/v1/menus/send/1")).andExpect(status().isOk()).andExpect(content().string("menu send to customers"));
+        mockMvc.perform(put("/api/v1/menus/send/1")).andExpect(status().isOk()).andExpect(content().string("menu send to customers"));
     }
 
     @Test
     void sendAcceptMails() throws Exception {
         //Act and Assert
-        mockMvc.perform(put("/v1/menus/send/accepted/1")).andExpect(status().isOk()).andExpect(content().string("mails send to accepted orders"));
+        mockMvc.perform(put("/api/v1/menus/send/accepted/1")).andExpect(status().isOk()).andExpect(content().string("mails send to accepted orders"));
     }
 
     @Test
     void sendDeclineMails() throws Exception {
         //Act and Assert
-        mockMvc.perform(put("/v1/menus/send/declined/1")).andExpect(status().isOk()).andExpect(content().string("mails send to declined orders"));
+        mockMvc.perform(put("/api/v1/menus/send/declined/1")).andExpect(status().isOk()).andExpect(content().string("mails send to declined orders"));
     }
 
     @Test
     void sendTikkie() throws Exception {
         //Act and Assert
-        mockMvc.perform(put("/v1/menus/send/tikkie/1")).andExpect(status().isOk()).andExpect(content().string("tikkielink update is sent"));
+        mockMvc.perform(put("/api/v1/menus/send/tikkie/1")).andExpect(status().isOk()).andExpect(content().string("tikkielink update is sent"));
     }
 }

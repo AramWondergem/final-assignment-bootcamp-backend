@@ -62,7 +62,7 @@ class DeliveryControllerTest {
         deliveryDto.setETA(LocalDateTime.of(2022, 10, 23, 19, 0, 0));
 
         //Act and assert
-        mockMvc.perform(put("/v1/deliveries/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(deliveryDto)))
+        mockMvc.perform(put("/api/v1/deliveries/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(deliveryDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("delivery updated"));
     }
@@ -70,6 +70,6 @@ class DeliveryControllerTest {
     @Test
     void sendETA() throws Exception {
         //Act and Assert
-        mockMvc.perform(put("/v1/deliveries/eta/1")).andExpect(status().isOk()).andExpect(content().string("ETA is sent to customer"));
+        mockMvc.perform(put("/api/v1/deliveries/eta/1")).andExpect(status().isOk()).andExpect(content().string("ETA is sent to customer"));
     }
 }

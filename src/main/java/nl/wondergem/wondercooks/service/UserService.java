@@ -48,7 +48,7 @@ public class UserService {
 
             return userMapper.userToUserDto(repos.save(newUser));
         } else {
-            throw new BadRequestException("Username already used");
+            throw new BadRequestException("E-mailaddress already used");
         }
 
     }
