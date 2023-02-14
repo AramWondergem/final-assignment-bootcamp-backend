@@ -8,7 +8,6 @@ import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.repository.CookCustomerRepository;
 import nl.wondergem.wondercooks.repository.UserRepository;
 import nl.wondergem.wondercooks.security.MyUserDetails;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -108,7 +107,7 @@ class CookCustomerServiceTest {
 
         //act
 
-        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails,userInputDto);
+        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails, userInputDto);
 
         //assert
 
@@ -129,7 +128,7 @@ class CookCustomerServiceTest {
 
         //act
 
-        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails,userInputDto);
+        CookCustomer result = cookCustomerService.createRelationCook(myUserDetails, userInputDto);
 
         //assert
 
@@ -142,7 +141,7 @@ class CookCustomerServiceTest {
 
     @Test
     @DisplayName("WhenCustomerWantToBeCustomerOfCookThenTheMethodsAreCalledInTheFunction")
-    void createRelationCustomer(){
+    void createRelationCustomer() {
         //Arrange
         long id = 2;
         MyUserDetails myUserDetails1 = new MyUserDetails(customer);

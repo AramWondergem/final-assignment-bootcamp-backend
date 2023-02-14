@@ -2,10 +2,12 @@ package nl.wondergem.wondercooks.mapper;
 
 import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.MenuDtoSmall;
+import nl.wondergem.wondercooks.dto.OrderDtoSmall;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.model.Menu;
 import nl.wondergem.wondercooks.model.MenuType;
+import nl.wondergem.wondercooks.model.Order;
 import nl.wondergem.wondercooks.model.User;
 import nl.wondergem.wondercooks.service.UserService;
 import org.springframework.context.annotation.Lazy;
@@ -20,9 +22,12 @@ public class MenuMapper {
     private final UserMapper userMapper;
     private final UserService userService;
 
-    public MenuMapper(@Lazy UserMapper userMapper, UserService userService) {
+    private final OrderMapper orderMapper;
+
+    public MenuMapper(@Lazy UserMapper userMapper, UserService userService, @Lazy OrderMapper orderMapper) {
         this.userMapper = userMapper;
         this.userService = userService;
+        this.orderMapper = orderMapper;
     }
 
 
@@ -32,9 +37,9 @@ public class MenuMapper {
         menuDto.cook = userMapper.userToUserDtoSmall(menu.getCook());
 
         Set<UserDtoSmall> customers = new HashSet<>();
-        if(menu.getCustomers() != null) {
-            for (User customer:
-                 menu.getCustomers()) {
+        if (menu.getCustomers() != null) {
+            for (User customer :
+                    menu.getCustomers()) {
 
                 UserDtoSmall customerDto = userMapper.userToUserDtoSmall(customer);
 
@@ -43,6 +48,18 @@ public class MenuMapper {
             }
         }
         menuDto.customers = customers;
+
+        Set<OrderDtoSmall> orders = new HashSet<>();
+
+        if (menu.getOrders() != null) {
+            for (Order order : menu.getOrders()) {
+                OrderDtoSmall orderDtoSmall = orderMapper.orderToOrderDtoSmall(order);
+                orders.add(orderDtoSmall);
+            }
+        }
+
+        menuDto.orders = orders;
+
         menuDto.title = menu.getTitle();
         menuDto.starter = menu.getStarter();
         menuDto.main = menu.getMain();
@@ -63,7 +80,7 @@ public class MenuMapper {
 
     }
 
-    public MenuDtoSmall menuToMenuDtoSmall(Menu menu){
+    public MenuDtoSmall menuToMenuDtoSmall(Menu menu) {
         MenuDtoSmall menuDtoSmall = new MenuDtoSmall();
 
         menuDtoSmall.id = menu.getId();
@@ -89,13 +106,13 @@ public class MenuMapper {
 
     }
 
-    public Menu menuInputDtoToMenu(MenuInputDto menuInputDto, Menu menu){
+    public Menu menuInputDtoToMenu(MenuInputDto menuInputDto, Menu menu) {
 
 
         menu.setCook(userService.getUser(menuInputDto.cookId));
 
         Set<User> customers = new HashSet<>();
-        if(menuInputDto.customersId != null) {
+        if (menuInputDto.customersId != null) {
             for (int id :
                     menuInputDto.customersId) {
 
@@ -113,7 +130,7 @@ public class MenuMapper {
         menu.setDessert(menuInputDto.dessert);
         menu.setMenuDescription(menuInputDto.menuDescription);
         menu.setMenuPictureURL(menuInputDto.menuPictureURL);
-        if(menuInputDto.menuType != null) {
+        if (menuInputDto.menuType != null) {
             menu.setMenuType(MenuType.valueOf(menuInputDto.menuType));
         }
         menu.setWarmUpInstruction(menuInputDto.warmUpInstruction);
@@ -126,7 +143,6 @@ public class MenuMapper {
         menu.setSendToCustomers(menuInputDto.sendToCustomers);
 
         return menu;
-
 
 
     }

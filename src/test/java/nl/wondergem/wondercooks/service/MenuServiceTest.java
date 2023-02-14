@@ -4,12 +4,8 @@ import nl.wondergem.wondercooks.dto.MenuDto;
 import nl.wondergem.wondercooks.dto.UserDtoSmall;
 import nl.wondergem.wondercooks.dto.inputDto.MenuInputDto;
 import nl.wondergem.wondercooks.mapper.MenuMapper;
-import nl.wondergem.wondercooks.model.EmailDetails;
-import nl.wondergem.wondercooks.model.Menu;
-import nl.wondergem.wondercooks.model.MenuType;
-import nl.wondergem.wondercooks.model.User;
+import nl.wondergem.wondercooks.model.*;
 import nl.wondergem.wondercooks.repository.MenuRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,24 +26,33 @@ import static org.mockito.Mockito.*;
 class MenuServiceTest {
 
     @Mock
-    MenuRepository menuRepository;
+    private MenuRepository menuRepository;
     @Mock
-    MenuMapper menuMapper;
+    private MenuMapper menuMapper;
     @Mock
-    EmailServiceImpl emailService;
+    private EmailServiceImpl emailService;
+
+    @Mock
+    private OrderService orderService;
     @InjectMocks
-    MenuService menuService;
+    private MenuService menuService;
 
-    MenuInputDto menuInputDto;
-    Menu menu;
-    MenuDto menuDto;
-    UserDtoSmall userDtoSmall;
-    UserDtoSmall userDtoSmall1;
-    UserDtoSmall userDtoSmall2;
+    private MenuInputDto menuInputDto;
+    private Menu menu;
+    private MenuDto menuDto;
+    private UserDtoSmall userDtoSmall;
+    private UserDtoSmall userDtoSmall1;
+    private UserDtoSmall userDtoSmall2;
 
-    User user;
-    User user1;
-    User user2;
+    private User user;
+    private User user1;
+    private User user2;
+
+    private Order order;
+    private Order order1;
+    private Order order2;
+
+    Set<Order> orders = new HashSet<>();
 
 
     @BeforeEach
@@ -106,6 +112,61 @@ class MenuServiceTest {
         menuInputDto.tikkieLink = "www.tikkie.nl";
         menuInputDto.sendToCustomers = false;
 
+        Delivery delivery = new Delivery();
+
+        order = new Order();
+        order.setId(1);
+        order.setMenu(menu);
+        order.setOrderCustomer(user1);
+        order.setNumberOfMenus(2);
+        order.setAllergies("pinda");
+        order.setAllergiesExplanation("I will die");
+        order.setStartDeliveryWindow(LocalTime.of(17, 0));
+        order.setEndDeliveryWindow(LocalTime.of(18, 0));
+        order.setStreetAndNumber("dorpsstraat 1");
+        order.setZipcode("1412ZZ");
+        order.setCity("City");
+        order.setComments("hallo");
+        order.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
+        order.setDelivery(delivery);
+
+        order1 = new Order();
+        order1.setId(1);
+        order1.setMenu(menu);
+        order1.setOrderCustomer(user2);
+        order1.setNumberOfMenus(2);
+        order1.setAllergies("pinda");
+        order1.setAllergiesExplanation("I will die");
+        order1.setStartDeliveryWindow(LocalTime.of(17, 0));
+        order1.setEndDeliveryWindow(LocalTime.of(18, 0));
+        order1.setStreetAndNumber("dorpsstraat 1");
+        order1.setZipcode("1412ZZ");
+        order1.setCity("City");
+        order1.setComments("hallo");
+        order1.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
+        order1.setDeclined(true);
+
+        order2 = new Order();
+        order2.setId(1);
+        order2.setMenu(menu);
+        order2.setOrderCustomer(user);
+        order2.setNumberOfMenus(2);
+        order2.setAllergies("pinda");
+        order2.setAllergiesExplanation("I will die");
+        order2.setStartDeliveryWindow(LocalTime.of(17, 0));
+        order2.setEndDeliveryWindow(LocalTime.of(18, 0));
+        order2.setStreetAndNumber("dorpsstraat 1");
+        order2.setZipcode("1412ZZ");
+        order2.setCity("City");
+        order2.setComments("hallo");
+        order2.setOrderDateAndTime(LocalDateTime.of(2020, 10, 10, 17, 0));
+
+
+        orders.add(order);
+        orders.add(order1);
+        orders.add(order2);
+
+
         menu = new Menu();
         menu.setId(1);
         menu.setCook(user);
@@ -147,6 +208,7 @@ class MenuServiceTest {
         menuDto.priceMenu = 12.50f;
         menuDto.tikkieLink = "www.tikkie.nl";
         menuDto.sendToCustomers = false;
+
     }
 
     @Test
@@ -201,12 +263,17 @@ class MenuServiceTest {
 
     @Test
     void deleteMenu() {
+        //Arrange
+        menu.setOrders(orders);
+        when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
+
         //Act
         menuService.deleteMenu(1);
 
         //Assert
-        verify(menuRepository).deleteById((long)1);
-
+        verify(menuRepository, times(1)).getReferenceById((long) 1);
+        verify(orderService, times(3)).deleteOrder(anyLong());
+        verify(menuRepository).deleteById((long) 1);
 
     }
 
@@ -222,6 +289,52 @@ class MenuServiceTest {
         //Assert
         verify(menuRepository, times(1)).getReferenceById((long) 1);
         verify(emailService, times(2)).sendSimpleMail(any(EmailDetails.class));
-        verify(menuRepository).save(any(Menu.class));
+        verify(menuRepository, times(1)).save(any(Menu.class));
+
+    }
+
+    @Test
+    void sendAcceptMails() {
+        //arrange
+        menu.setOrders(orders);
+        when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
+
+
+        //act
+        menuService.sendAcceptMails(1);
+
+        //assert
+        verify(menuRepository, times(1)).getReferenceById((long) 1);
+        verify(emailService, times(1)).sendSimpleMail(any(EmailDetails.class));
+    }
+
+    @Test
+    void sendDeclineMails() {
+        //arrange
+        menu.setOrders(orders);
+        when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
+
+
+        //act
+        menuService.sendDeclineMails(1);
+
+        //assert
+        verify(menuRepository, times(1)).getReferenceById((long) 1);
+        verify(emailService, times(1)).sendSimpleMail(any(EmailDetails.class));
+    }
+
+    @Test
+    void sendTikkie() {
+        //arrange
+        menu.setOrders(orders);
+        when(menuRepository.getReferenceById((long) 1)).thenReturn(menu);
+
+
+        //act
+        menuService.sendTikkie(1);
+
+        //assert
+        verify(menuRepository, times(1)).getReferenceById((long) 1);
+        verify(emailService, times(1)).sendSimpleMail(any(EmailDetails.class));
     }
 }

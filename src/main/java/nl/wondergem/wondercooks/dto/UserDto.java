@@ -24,4 +24,5 @@ public class UserDto {
     public Collection<UserDtoSmall> cooks;
     public Collection<MenuDto> menusAsCook;
     public Collection<MenuDto> menusAsCustomers;
+    public Collection<OrderDtoSmall> orders;
 }

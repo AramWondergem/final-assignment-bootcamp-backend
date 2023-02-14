@@ -1,28 +1,23 @@
 package nl.wondergem.wondercooks.security;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import nl.wondergem.wondercooks.util.RandomKeyGenerator;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 
-import java.security.Key;
-import java.security.SignatureException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 
-
 @Service
 public class JwtService {
-//    private final static Key SECRET_KEY = RandomKeyGenerator.getKeyFromKeyGenerator(64); todo weer aanzetten
-    private final static String SECRET_KEY = "DITISEENTEST";
+    public static Dotenv dotenv = Dotenv.load();
+    private final static String SECRET_KEY = dotenv.get("TOKEN_SIGNATURE");
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -41,8 +36,8 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
 
 
-            return
-                    Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return
+                Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 
 
     }
@@ -55,9 +50,10 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
+
     private String createToken(Map<String, Object> claims, String
             subject) {
-        long validPeriod = 1000 * 60 * 60 * 24 * 24; // 10 days in ms todo aanpassen naar 2 dagen
+        long validPeriod = 1000 * 60 * 60 * 24 * 24; // 10 days in ms
         long currentTime = System.currentTimeMillis();
         return Jwts.builder()
                 .setClaims(claims)

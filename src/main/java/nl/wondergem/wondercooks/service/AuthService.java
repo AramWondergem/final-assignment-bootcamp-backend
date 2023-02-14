@@ -22,7 +22,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public Authentication authenticationChecker(String username, String password){
+    public Authentication authenticationChecker(String username, String password) {
         UsernamePasswordAuthenticationToken up =
                 new UsernamePasswordAuthenticationToken(username, password);
 
@@ -32,7 +32,7 @@ public class AuthService {
 
     public String signIn(AuthDto authDto) {
 
-       Authentication auth = authenticationChecker(authDto.email,authDto.password);
+        Authentication auth = authenticationChecker(authDto.email, authDto.password);
 
 
         UserDetails ud = (UserDetails) auth.getPrincipal();

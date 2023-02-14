@@ -1,9 +1,8 @@
 package nl.wondergem.wondercooks.controller;
 
-import nl.wondergem.wondercooks.exception.BadRequestException;
 import nl.wondergem.wondercooks.exception.UsernameNotFoundException;
 import nl.wondergem.wondercooks.service.FileManagerService;
-import nl.wondergem.wondercooks.util.Util;
+import nl.wondergem.wondercooks.util.StringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -35,7 +34,7 @@ public class FileManagerController {
     public ResponseEntity<Object> storeFile(@RequestParam("file") MultipartFile file) throws FileAlreadyExistsException {
 
         String fileName = fileManagerService.storeFile(file);
-        URI uri = Util.uriGenerator(env.getProperty("apiPrefix") + "/files/" + fileName);
+        URI uri = StringGenerator.uriGenerator(env.getProperty("apiPrefix") + "/files/" + fileName);
         return ResponseEntity.created(uri).body("File stored");
     }
 
@@ -45,7 +44,7 @@ public class FileManagerController {
 
         String mediaType = FileTypeMap.getDefaultFileTypeMap().getContentType(fileName);
 
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mediaType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mediaType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName" + resource.getFilename()).body(resource);
 
 
     }
@@ -54,7 +53,7 @@ public class FileManagerController {
     public ResponseEntity<Object> deleteFile(@PathVariable String fileName) {
 
         if (fileManagerService.deleteFile(fileName)) {
-            return ResponseEntity.ok( fileName + " is deleted");
+            return ResponseEntity.ok(fileName + " is deleted");
         } else {
             throw new UsernameNotFoundException("file does not exist in the system");
         }

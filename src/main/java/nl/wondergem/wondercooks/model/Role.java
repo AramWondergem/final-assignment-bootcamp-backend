@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.Collection;
 
 
-
 public enum Role {
     ADMIN,
     COOK,

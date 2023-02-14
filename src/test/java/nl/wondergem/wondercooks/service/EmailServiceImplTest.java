@@ -30,7 +30,7 @@ class EmailServiceImplTest {
     @Test
     void sendSimpleMail() {
         //arrange
-        emailDetails = new EmailDetails("wonderreclame@gmail.com","Hello world", "Hello world");
+        emailDetails = new EmailDetails("wonderreclame@gmail.com", "Hello world", "Hello world");
 
         //act
         String result = emailService.sendSimpleMail(emailDetails);
