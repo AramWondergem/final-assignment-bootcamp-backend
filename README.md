@@ -5,10 +5,18 @@
 
 ## Table of Contents
 
-1. [Requirements](#requirements)
-2. [Installation Steps](#installation-steps)
-3. [Roles and Test Accounts](#roles-and-test-accounts)
-4. [API Endpoints](#api-endpoints)
+1. [Introduction](#requirements)
+2. [Requirements](#requirements)
+3. [Installation Steps](#installation-steps-to-run-backend-locally)
+4. [Roles and Test Accounts](#roles-and-test-accounts)
+5. [API Endpoints](#api-endpoints)
+
+## Introduction
+
+This document provides the installation guide for the backend of the Wondergems application. Wondergems is a web application that enables hobby chefs to send menus to friends and family and handle all aspects of menu orders and delivery.
+
+This guide covers the necessary programs and steps to set up the backend. It also details the REST API endpoints available for the application, which include authentication, user management, order management, menu management, and file handling.
+
 
 ## Requirements
 
