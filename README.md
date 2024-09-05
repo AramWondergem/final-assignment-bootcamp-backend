@@ -1,4 +1,4 @@
-# Wondergems
+# Backend Wondergems
 
 **Version:** 1.0  
 **Author:** Aram Wondergem  
@@ -7,9 +7,8 @@
 
 1. [Requirements](#requirements)
 2. [Installation Steps](#installation-steps)
-3. [Usage](#usage)
-4. [Roles and Test Accounts](#roles-and-test-accounts)
-5. [API Endpoints](#api-endpoints)
+3. [Roles and Test Accounts](#roles-and-test-accounts)
+4. [API Endpoints](#api-endpoints)
 
 ## Requirements
 
@@ -35,9 +34,7 @@
 4. Fill in the `TOKEN_SIGNATURE` in the `.env` file in the `resources` folder.
 5. Build and run the backend.
 
-## Usage
-
-### Run the Frontend Locally
+### 3.Run the Frontend Locally
 Follow the README of the [frontend](https://github.com/AramWondergem/final-assignement-bootcamp-frontend) of the web application.
 
 ## Roles and Test Accounts
