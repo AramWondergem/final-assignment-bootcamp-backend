@@ -5,7 +5,7 @@
 
 ## Table of Contents
 
-1. [Introduction](#requirements)
+1. [Introduction](#introduction)
 2. [Requirements](#requirements)
 3. [Installation Steps](#installation-steps-to-run-backend-locally)
 4. [Roles and Test Accounts](#roles-and-test-accounts)
